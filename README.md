@@ -11,6 +11,7 @@ Modules:
       // digest = ba7816bf8f01cfea414140de5dae2223b00361a396177a9cb410ff61f20015ad
       ```
   - DTE
+    * Open file in Visual Studio and goto a line from runtime.
     ```cpp
     // link with: atls.lib ole32.lib OleAut32.lib uuid.lib
     import DTE;
