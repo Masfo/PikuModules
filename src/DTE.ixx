@@ -1,12 +1,15 @@
 //
 // Link with: atls.lib ole32.lib oleaut32.lib uuid.lib
-
+//
+// Also remember to call CoInitialize or CoInitializeEx
 module;
 #define WIN32_LEAN_AND_MEAN
 #include <windows.h>
 
 
 #pragma warning(suppress : 4471)
+#define NOCOM
+
 #include <atlbase.h>
 
 #include <cstdio>
@@ -16,60 +19,61 @@ namespace DTE
 {
 #pragma warning(push)
 #pragma warning(disable : 4471)
+
     struct __declspec(uuid("04a72314-32e9-48e2-9b87-a63603454f3e")) _DTE : IDispatch
     {
-        virtual HRESULT __stdcall get_Name(BSTR *)                                         = 0;
-        virtual HRESULT __stdcall get_FileName(BSTR *)                                     = 0;
-        virtual HRESULT __stdcall get_Version(BSTR *)                                      = 0;
-        virtual HRESULT __stdcall get_CommandBars(IDispatch **)                            = 0;
-        virtual HRESULT __stdcall get_Windows(struct Windows **)                           = 0;
-        virtual HRESULT __stdcall get_Events(struct Events **)                             = 0;
-        virtual HRESULT __stdcall get_AddIns(struct AddIns **)                             = 0;
-        virtual HRESULT __stdcall get_MainWindow(struct Window **)                         = 0;
-        virtual HRESULT __stdcall get_ActiveWindow(struct Window **)                       = 0;
-        virtual HRESULT __stdcall Quit()                                                   = 0;
-        virtual HRESULT __stdcall get_DisplayMode(enum vsDisplay *)                        = 0;
-        virtual HRESULT __stdcall put_DisplayMode(enum vsDisplay)                          = 0;
-        virtual HRESULT __stdcall get_Solution(struct _Solution **)                        = 0;
-        virtual HRESULT __stdcall get_Commands(struct Commands **)                         = 0;
-        virtual HRESULT __stdcall GetObject2(BSTR Name, IDispatch **)                      = 0;
-        virtual HRESULT __stdcall get_Properties(BSTR, BSTR, struct Properties **)         = 0;
-        virtual HRESULT __stdcall get_SelectedItems(struct SelectedItems **)               = 0;
-        virtual HRESULT __stdcall get_CommandLineArguments(BSTR *)                         = 0;
-        virtual HRESULT __stdcall OpenFile(BSTR ViewKind, BSTR, struct Window **)          = 0;
-        virtual HRESULT __stdcall get_IsOpenFile(BSTR, BSTR, VARIANT_BOOL *)               = 0;
-        virtual HRESULT __stdcall get_DTE(struct _DTE **)                                  = 0;
-        virtual HRESULT __stdcall get_LocaleID(long *)                                     = 0;
-        virtual HRESULT __stdcall get_WindowConfigurations(struct WindowConfigurations **) = 0;
-        virtual HRESULT __stdcall get_Documents(struct Documents **)                       = 0;
-        virtual HRESULT __stdcall get_ActiveDocument(struct Document **)                   = 0;
-        virtual HRESULT __stdcall ExecuteCommand(BSTR, BSTR)                               = 0;
-        virtual HRESULT __stdcall get_Globals(struct Globals **)                           = 0;
-        virtual HRESULT __stdcall get_StatusBar(struct StatusBar **)                       = 0;
-        virtual HRESULT __stdcall get_FullName(BSTR *)                                     = 0;
-        virtual HRESULT __stdcall get_UserControl(VARIANT_BOOL *)                          = 0;
-        virtual HRESULT __stdcall put_UserControl(VARIANT_BOOL)                            = 0;
-        virtual HRESULT __stdcall get_ObjectExtenders(struct ObjectExtenders **)           = 0;
-        virtual HRESULT __stdcall get_Find(struct Find **)                                 = 0;
-        virtual HRESULT __stdcall get_Mode(enum vsIDEMode *)                               = 0;
-        virtual HRESULT __stdcall LaunchWizard(BSTR, SAFEARRAY **, enum wizardResult *)    = 0;
-        virtual HRESULT __stdcall get_ItemOperations(struct ItemOperations **)             = 0;
-        virtual HRESULT __stdcall get_UndoContext(struct UndoContext **)                   = 0;
-        virtual HRESULT __stdcall get_Macros(struct Macros **)                             = 0;
-        virtual HRESULT __stdcall get_ActiveSolutionProjects(VARIANT *)                    = 0;
-        virtual HRESULT __stdcall get_MacrosIDE(struct _DTE **)                            = 0;
-        virtual HRESULT __stdcall get_RegistryRoot(BSTR *)                                 = 0;
-        virtual HRESULT __stdcall get_Application(struct _DTE **pVal)                      = 0;
-        virtual HRESULT __stdcall get_ContextAttributes(struct ContextAttributes **)       = 0;
-        virtual HRESULT __stdcall get_SourceControl(struct SourceControl **)               = 0;
-        virtual HRESULT __stdcall get_SuppressUI(VARIANT_BOOL *)                           = 0;
-        virtual HRESULT __stdcall put_SuppressUI(VARIANT_BOOL)                             = 0;
-        virtual HRESULT __stdcall get_Debugger(struct Debugger **)                         = 0;
-        virtual HRESULT __stdcall SatelliteDllPath(BSTR, BSTR, BSTR *)                     = 0;
-        virtual HRESULT __stdcall get_Edition(BSTR *)                                      = 0;
+        virtual HRESULT get_Name(BSTR *)                                         = 0;
+        virtual HRESULT get_FileName(BSTR *)                                     = 0;
+        virtual HRESULT get_Version(BSTR *)                                      = 0;
+        virtual HRESULT get_CommandBars(IDispatch **)                            = 0;
+        virtual HRESULT get_Windows(struct Windows **)                           = 0;
+        virtual HRESULT get_Events(struct Events **)                             = 0;
+        virtual HRESULT get_AddIns(struct AddIns **)                             = 0;
+        virtual HRESULT get_MainWindow(struct Window **)                         = 0;
+        virtual HRESULT get_ActiveWindow(struct Window **)                       = 0;
+        virtual HRESULT Quit()                                                   = 0;
+        virtual HRESULT get_DisplayMode(enum vsDisplay *)                        = 0;
+        virtual HRESULT put_DisplayMode(enum vsDisplay)                          = 0;
+        virtual HRESULT get_Solution(struct _Solution **)                        = 0;
+        virtual HRESULT get_Commands(struct Commands **)                         = 0;
+        virtual HRESULT GetObject2(BSTR Name, IDispatch **)                      = 0;
+        virtual HRESULT get_Properties(BSTR, BSTR, struct Properties **)         = 0;
+        virtual HRESULT get_SelectedItems(struct SelectedItems **)               = 0;
+        virtual HRESULT get_CommandLineArguments(BSTR *)                         = 0;
+        virtual HRESULT OpenFile(BSTR ViewKind, BSTR, struct Window **)          = 0;
+        virtual HRESULT get_IsOpenFile(BSTR, BSTR, VARIANT_BOOL *)               = 0;
+        virtual HRESULT get_DTE(struct _DTE **)                                  = 0;
+        virtual HRESULT get_LocaleID(long *)                                     = 0;
+        virtual HRESULT get_WindowConfigurations(struct WindowConfigurations **) = 0;
+        virtual HRESULT get_Documents(struct Documents **)                       = 0;
+        virtual HRESULT get_ActiveDocument(struct Document **)                   = 0;
+        virtual HRESULT ExecuteCommand(BSTR, BSTR)                               = 0;
+        virtual HRESULT get_Globals(struct Globals **)                           = 0;
+        virtual HRESULT get_StatusBar(struct StatusBar **)                       = 0;
+        virtual HRESULT get_FullName(BSTR *)                                     = 0;
+        virtual HRESULT get_UserControl(VARIANT_BOOL *)                          = 0;
+        virtual HRESULT put_UserControl(VARIANT_BOOL)                            = 0;
+        virtual HRESULT get_ObjectExtenders(struct ObjectExtenders **)           = 0;
+        virtual HRESULT get_Find(struct Find **)                                 = 0;
+        virtual HRESULT get_Mode(enum vsIDEMode *)                               = 0;
+        virtual HRESULT LaunchWizard(BSTR, SAFEARRAY **, enum wizardResult *)    = 0;
+        virtual HRESULT get_ItemOperations(struct ItemOperations **)             = 0;
+        virtual HRESULT get_UndoContext(struct UndoContext **)                   = 0;
+        virtual HRESULT get_Macros(struct Macros **)                             = 0;
+        virtual HRESULT get_ActiveSolutionProjects(VARIANT *)                    = 0;
+        virtual HRESULT get_MacrosIDE(struct _DTE **)                            = 0;
+        virtual HRESULT get_RegistryRoot(BSTR *)                                 = 0;
+        virtual HRESULT get_Application(struct _DTE **pVal)                      = 0;
+        virtual HRESULT get_ContextAttributes(struct ContextAttributes **)       = 0;
+        virtual HRESULT get_SourceControl(struct SourceControl **)               = 0;
+        virtual HRESULT get_SuppressUI(VARIANT_BOOL *)                           = 0;
+        virtual HRESULT put_SuppressUI(VARIANT_BOOL)                             = 0;
+        virtual HRESULT get_Debugger(struct Debugger **)                         = 0;
+        virtual HRESULT SatelliteDllPath(BSTR, BSTR, BSTR *)                     = 0;
+        virtual HRESULT get_Edition(BSTR *)                                      = 0;
     };
-#pragma warning(pop)
 
+#pragma warning(pop)
 
     auto GetDTE() -> CComPtr<_DTE>
     {
@@ -136,4 +140,5 @@ namespace DTE
 
         return GotoLine(quoted_filename, line);
     }
+
 }   // namespace DTE
