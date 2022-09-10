@@ -1,5 +1,5 @@
 //
-// Link with: atls.lib ole32.lib OleAut32.lib uuid.lib
+// Link with: atls.lib ole32.lib oleaut32.lib uuid.lib
 
 module;
 #define WIN32_LEAN_AND_MEAN
@@ -61,7 +61,7 @@ namespace DTE
     }
 
 
-    export bool [[maybe_unused]] GotoLine(const wchar_t *filename, unsigned int line)
+    export bool GotoLine(const wchar_t *filename, unsigned int line)
     {
         if (ExecuteCommand(L"File.OpenFile", filename) == false)
             return false;
@@ -74,7 +74,7 @@ namespace DTE
         return true;
     }
 
-    export bool [[maybe_unused]] GotoLine(const char *filename, unsigned int line)
+    export bool GotoLine(const char *filename, unsigned int line)
     {
         wchar_t quoted_filename[MAX_PATH]{};
         if (swprintf_s(quoted_filename, MAX_PATH, L"\"%S\"", filename) <= 0)
