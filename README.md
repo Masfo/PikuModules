@@ -1,7 +1,15 @@
 # PikuModules - util modules
 
 Modules:
-  - SHA256
+  - piku.debug
+    ```cpp
+    import piku.debug;
+    
+    piku::trace("Hello {}", "World");
+    
+    // winmain.cpp(15): Hello World
+    ```
+  - sha256
       ```cpp
       import hash.sha256;
       
