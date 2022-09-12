@@ -32,5 +32,8 @@
     <ClCompile Include="Debug.ixx">
       <Filter>Modules</Filter>
     </ClCompile>
+    <ClCompile Include="piku.ixx">
+      <Filter>Modules</Filter>
+    </ClCompile>
   </ItemGroup>
 </Project>

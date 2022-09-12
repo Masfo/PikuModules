@@ -43,4 +43,6 @@ export namespace piku
         output_message(std::format("{}({}): {}\n"sv, fmt.loc.file_name(), fmt.loc.line(), fmt.fmt));
     }
 
+    void trace() noexcept { output_message("\n"); }
+
 }   // namespace piku
