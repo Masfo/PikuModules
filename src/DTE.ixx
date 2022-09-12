@@ -8,10 +8,8 @@ module;
 
 
 #pragma warning(suppress : 4471)
-#define NOCOM
-
 #include <atlbase.h>
-
+#import "libid:80cc9f66-e7d8-4ddd-85b6-d9e6cd0e93e2" version("9.0") lcid("0") raw_interfaces_only named_guids
 #include <cstdio>
 export module DTE;
 
@@ -22,19 +20,21 @@ namespace DTE
 
     struct __declspec(uuid("04a72314-32e9-48e2-9b87-a63603454f3e")) _DTE : IDispatch
     {
-        virtual HRESULT get_Name(BSTR *)                                         = 0;
-        virtual HRESULT get_FileName(BSTR *)                                     = 0;
-        virtual HRESULT get_Version(BSTR *)                                      = 0;
-        virtual HRESULT get_CommandBars(IDispatch **)                            = 0;
-        virtual HRESULT get_Windows(struct Windows **)                           = 0;
-        virtual HRESULT get_Events(struct Events **)                             = 0;
-        virtual HRESULT get_AddIns(struct AddIns **)                             = 0;
-        virtual HRESULT get_MainWindow(struct Window **)                         = 0;
-        virtual HRESULT get_ActiveWindow(struct Window **)                       = 0;
-        virtual HRESULT Quit()                                                   = 0;
-        virtual HRESULT get_DisplayMode(enum vsDisplay *)                        = 0;
-        virtual HRESULT put_DisplayMode(enum vsDisplay)                          = 0;
-        virtual HRESULT get_Solution(struct _Solution **)                        = 0;
+        virtual HRESULT get_Name(BSTR *)                   = 0;
+        virtual HRESULT get_FileName(BSTR *)               = 0;
+        virtual HRESULT get_Version(BSTR *)                = 0;
+        virtual HRESULT get_CommandBars(IDispatch **)      = 0;
+        virtual HRESULT get_Windows(struct Windows **)     = 0;
+        virtual HRESULT get_Events(struct Events **)       = 0;
+        virtual HRESULT get_AddIns(struct AddIns **)       = 0;
+        virtual HRESULT get_MainWindow(struct Window **)   = 0;
+        virtual HRESULT get_ActiveWindow(struct Window **) = 0;
+        virtual HRESULT Quit()                             = 0;
+        virtual HRESULT get_DisplayMode(enum vsDisplay *)  = 0;
+        virtual HRESULT put_DisplayMode(enum vsDisplay)    = 0;
+
+        virtual HRESULT get_Solution(struct _Solution **) = 0;
+
         virtual HRESULT get_Commands(struct Commands **)                         = 0;
         virtual HRESULT GetObject2(BSTR Name, IDispatch **)                      = 0;
         virtual HRESULT get_Properties(BSTR, BSTR, struct Properties **)         = 0;
@@ -46,45 +46,44 @@ namespace DTE
         virtual HRESULT get_LocaleID(long *)                                     = 0;
         virtual HRESULT get_WindowConfigurations(struct WindowConfigurations **) = 0;
         virtual HRESULT get_Documents(struct Documents **)                       = 0;
-        virtual HRESULT get_ActiveDocument(struct Document **)                   = 0;
-        virtual HRESULT ExecuteCommand(BSTR, BSTR)                               = 0;
-        virtual HRESULT get_Globals(struct Globals **)                           = 0;
-        virtual HRESULT get_StatusBar(struct StatusBar **)                       = 0;
-        virtual HRESULT get_FullName(BSTR *)                                     = 0;
-        virtual HRESULT get_UserControl(VARIANT_BOOL *)                          = 0;
-        virtual HRESULT put_UserControl(VARIANT_BOOL)                            = 0;
-        virtual HRESULT get_ObjectExtenders(struct ObjectExtenders **)           = 0;
-        virtual HRESULT get_Find(struct Find **)                                 = 0;
-        virtual HRESULT get_Mode(enum vsIDEMode *)                               = 0;
-        virtual HRESULT LaunchWizard(BSTR, SAFEARRAY **, enum wizardResult *)    = 0;
-        virtual HRESULT get_ItemOperations(struct ItemOperations **)             = 0;
-        virtual HRESULT get_UndoContext(struct UndoContext **)                   = 0;
-        virtual HRESULT get_Macros(struct Macros **)                             = 0;
-        virtual HRESULT get_ActiveSolutionProjects(VARIANT *)                    = 0;
-        virtual HRESULT get_MacrosIDE(struct _DTE **)                            = 0;
-        virtual HRESULT get_RegistryRoot(BSTR *)                                 = 0;
-        virtual HRESULT get_Application(struct _DTE **pVal)                      = 0;
-        virtual HRESULT get_ContextAttributes(struct ContextAttributes **)       = 0;
-        virtual HRESULT get_SourceControl(struct SourceControl **)               = 0;
-        virtual HRESULT get_SuppressUI(VARIANT_BOOL *)                           = 0;
-        virtual HRESULT put_SuppressUI(VARIANT_BOOL)                             = 0;
-        virtual HRESULT get_Debugger(struct Debugger **)                         = 0;
-        virtual HRESULT SatelliteDllPath(BSTR, BSTR, BSTR *)                     = 0;
-        virtual HRESULT get_Edition(BSTR *)                                      = 0;
+
+        virtual HRESULT get_ActiveDocument(struct _Document **) = 0;
+
+        virtual HRESULT ExecuteCommand(BSTR, BSTR) = 0;
+
+        virtual HRESULT get_Globals(struct Globals **)                        = 0;
+        virtual HRESULT get_StatusBar(struct StatusBar **)                    = 0;
+        virtual HRESULT get_FullName(BSTR *)                                  = 0;
+        virtual HRESULT get_UserControl(VARIANT_BOOL *)                       = 0;
+        virtual HRESULT put_UserControl(VARIANT_BOOL)                         = 0;
+        virtual HRESULT get_ObjectExtenders(struct ObjectExtenders **)        = 0;
+        virtual HRESULT get_Find(struct Find **)                              = 0;
+        virtual HRESULT get_Mode(enum vsIDEMode *)                            = 0;
+        virtual HRESULT LaunchWizard(BSTR, SAFEARRAY **, enum wizardResult *) = 0;
+        virtual HRESULT get_ItemOperations(struct ItemOperations **)          = 0;
+        virtual HRESULT get_UndoContext(struct UndoContext **)                = 0;
+        virtual HRESULT get_Macros(struct Macros **)                          = 0;
+        virtual HRESULT get_ActiveSolutionProjects(VARIANT *)                 = 0;
+        virtual HRESULT get_MacrosIDE(struct _DTE **)                         = 0;
+        virtual HRESULT get_RegistryRoot(BSTR *)                              = 0;
+        virtual HRESULT get_Application(struct _DTE **pVal)                   = 0;
+        virtual HRESULT get_ContextAttributes(struct ContextAttributes **)    = 0;
+        virtual HRESULT get_SourceControl(struct SourceControl **)            = 0;
+        virtual HRESULT get_SuppressUI(VARIANT_BOOL *)                        = 0;
+        virtual HRESULT put_SuppressUI(VARIANT_BOOL)                          = 0;
+        virtual HRESULT get_Debugger(struct Debugger **)                      = 0;
+        virtual HRESULT SatelliteDllPath(BSTR, BSTR, BSTR *)                  = 0;
+        virtual HRESULT get_Edition(BSTR *)                                   = 0;
     };
 
 #pragma warning(pop)
 
     auto GetDTE() -> CComPtr<_DTE>
     {
+        CLSID clsid;
 
-        HRESULT result;
-        CLSID   clsid;
-
-        // 2022: VisualStudio.DTE.17.0
-        // 2019: VisualStudio.DTE.16.0
-
-        result = ::CLSIDFromProgID(L"VisualStudio.DTE", &clsid);
+        CComPtr<_DTE> dte;
+        HRESULT       result = ::CLSIDFromProgID(L"VisualStudio.DTE", &clsid);
         if (FAILED(result))
             return nullptr;
 
@@ -93,21 +92,16 @@ namespace DTE
         if (FAILED(result))
             return nullptr;
 
-        CComPtr<_DTE> DTE;
-        if (!punk)
-            return nullptr;
+        punk->QueryInterface(&dte);
 
-        punk->QueryInterface(&DTE);
-
-        if (!DTE)
-            return nullptr;
-
-        return DTE;
+        return dte ? dte : nullptr;
     }
 
     export bool ExecuteCommand(wchar_t const *action, const wchar_t *action_parameter)
     {
         auto DTE = GetDTE();
+        if (!DTE)
+            return false;
 
         CComBSTR command(action);
         CComBSTR param(action_parameter);
@@ -121,7 +115,11 @@ namespace DTE
 
     export bool GotoLine(const wchar_t *filename, unsigned int line)
     {
-        if (ExecuteCommand(L"File.OpenFile", filename) == false)
+        wchar_t quoted_filename[MAX_PATH]{};
+        if (swprintf_s(quoted_filename, MAX_PATH, L"\"%s\"", filename) <= 0)
+            return false;
+
+        if (ExecuteCommand(L"File.OpenFile", quoted_filename) == false)
             return false;
 
         wchar_t linetext[64]{};
@@ -134,11 +132,11 @@ namespace DTE
 
     export bool GotoLine(const char *filename, unsigned int line)
     {
-        wchar_t quoted_filename[MAX_PATH]{};
-        if (swprintf_s(quoted_filename, MAX_PATH, L"\"%S\"", filename) <= 0)
+        wchar_t wfilename[MAX_PATH]{};
+        if (swprintf_s(wfilename, MAX_PATH, L"%S", filename) <= 0)
             return false;
 
-        return GotoLine(quoted_filename, line);
+        return GotoLine(wfilename, line);
     }
 
 }   // namespace DTE

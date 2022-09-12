@@ -3,3 +3,4 @@ Release
 *.vsidx
 *.lock
 /.vs/PikuModules/v17
+*.ifc
