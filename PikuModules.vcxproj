@@ -167,6 +167,7 @@
   </ItemDefinitionGroup>
   <ItemGroup>
     <None Include="..\Piku\Test01\.clang-format" />
+    <None Include="README.md" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="DisabledWarningsMSVC.h" />
@@ -176,7 +177,9 @@
     <ClCompile Include="Debug.ixx">
       <CompileAs Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">CompileAsCppModule</CompileAs>
     </ClCompile>
-    <ClCompile Include="piku.ixx" />
+    <ClCompile Include="piku.ixx">
+      <CompileAs Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">CompileAsCppModule</CompileAs>
+    </ClCompile>
     <ClCompile Include="src\DTE.ixx">
       <WarningLevel Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">Level4</WarningLevel>
       <CompileAs Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">CompileAsCppModule</CompileAs>

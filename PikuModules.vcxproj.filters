@@ -13,6 +13,9 @@
     <None Include="..\Piku\Test01\.clang-format">
       <Filter>config</Filter>
     </None>
+    <None Include="README.md">
+      <Filter>config</Filter>
+    </None>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="include\buildnumber.h">
