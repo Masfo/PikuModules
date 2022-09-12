@@ -1,4 +1,7 @@
 module;
+#define WIN32_LEAN_AND_MEAN
+#include <windows.h>
+
 #include <format>
 #include <iostream>
 #include <string_view>
@@ -10,35 +13,34 @@ using namespace std::string_view_literals;
 // print
 // trace
 // assert
+void output_message(const std::string_view message) { OutputDebugStringA(message.data()); }
 
-void output_message(const std::string_view message) { std::cout << message << std::endl; }
-
-export template <typename... Args>
-void trace2(const std::string_view fmt,
-            Args &&...args,
-            const std::source_location &loc = std::source_location::current()) noexcept
+struct FormatLocation
 {
-    if (fmt != "\n"sv)
+    std::string_view     fmt;
+    std::source_location loc;
+    FormatLocation(const char *s, const std::source_location &l = std::source_location::current()) : fmt(s), loc(l) {}
+    FormatLocation(const std::string_view s, const std::source_location &l = std::source_location::current())
+        : fmt(s), loc(l)
     {
-        output_message(std::format(
-            "{}({:6}): {}\n"sv, loc.file_name(), loc.line(), std::vformat(fmt, std::make_format_args(args...))));
-    }
-    else
-    {
-        output_message(fmt);
-    }
-}
-
-
-#if 0
-// Trace
-template <typename T, typename... Ts> struct trace
-{
-    static_assert(std::is_convertible_v<T, std::string_view>, "ASSERT: First argument is not a format string");
-    explicit trace(T &&fmts, Ts &&...ts, const std::source_location &loc = std::source_location::current()) noexcept
-    {
-        detail::output_trace(compose_debug_line(loc, fmts, ts...));
     }
 };
-template <typename... Ts> trace(Ts &&...) -> trace<Ts...>;
-#endif
+
+export namespace piku
+{
+
+    template <typename... Args> void trace(FormatLocation fmt, Args &&...args) noexcept
+    {
+
+        output_message(std::format("{}({}): {}\n"sv,
+                                   fmt.loc.file_name(),
+                                   fmt.loc.line(),
+                                   std::vformat(fmt.fmt, std::make_format_args(args...))));
+    }
+
+    void trace(FormatLocation fmt) noexcept
+    {
+        output_message(std::format("{}({}): {}\n"sv, fmt.loc.file_name(), fmt.loc.line(), fmt.fmt));
+    }
+
+}   // namespace piku
