@@ -1,7 +1,7 @@
 # PikuModules - util modules
 
 Modules:
-  - piku.debug
+  - **piku.debug**
     ```cpp
     import piku.debug;
     
@@ -10,7 +10,7 @@ Modules:
     piku::println("Hi, World"); // Hi, World
     piku::print("no newline");
     ```
-  - sha256
+  - **sha256**
       ```cpp
       import hash.sha256;
       
@@ -19,8 +19,7 @@ Modules:
       auto digest = hasher.finalize().to_string();
       // digest = ba7816bf8f01cfea414140de5dae2223b00361a396177a9cb410ff61f20015ad
       ```
-  - DTE
-    * Open file in Visual Studio and goto a line from runtime.
+  - **DTE** - *Open file in Visual Studio and goto a line from runtime.*
     ```cpp
     // link with: atls.lib ole32.lib OleAut32.lib uuid.lib
     import DTE;
