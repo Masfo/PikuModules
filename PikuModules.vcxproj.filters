@@ -29,5 +29,8 @@
     <ClCompile Include="src\DTE.ixx">
       <Filter>Modules</Filter>
     </ClCompile>
+    <ClCompile Include="Debug.ixx">
+      <Filter>Modules</Filter>
+    </ClCompile>
   </ItemGroup>
 </Project>

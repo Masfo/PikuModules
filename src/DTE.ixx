@@ -9,7 +9,7 @@ module;
 
 #pragma warning(suppress : 4471)
 #include <atlbase.h>
-#import "libid:80cc9f66-e7d8-4ddd-85b6-d9e6cd0e93e2" version("9.0") lcid("0") raw_interfaces_only named_guids
+//#import "libid:80cc9f66-e7d8-4ddd-85b6-d9e6cd0e93e2" version("9.0") lcid("0") raw_interfaces_only named_guids
 #include <cstdio>
 export module DTE;
 

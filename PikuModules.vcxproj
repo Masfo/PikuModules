@@ -173,6 +173,7 @@
     <ClInclude Include="include\buildnumber.h" />
   </ItemGroup>
   <ItemGroup>
+    <ClCompile Include="Debug.ixx" />
     <ClCompile Include="src\DTE.ixx">
       <WarningLevel Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">Level4</WarningLevel>
       <CompileAs Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">CompileAsCppModule</CompileAs>
