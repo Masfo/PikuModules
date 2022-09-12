@@ -28,6 +28,8 @@ struct FormatLocation
 
 export namespace piku
 {
+
+
     // print
     template <typename... Args> void print(std::string_view fmt, Args &&...args) noexcept
     {
@@ -64,5 +66,18 @@ export namespace piku
     }
 
     void trace() noexcept { output_message("\n"); }
+
+
+    // Assert
+    void assert(bool                        test,
+                const std::string_view            message = {},
+                const std::source_location &loc     = std::source_location::current()) noexcept
+    {
+        // TODO: FormatLocation for multiple argument assert message
+        if (test)
+        {
+            println("[ASSERT]\n {}({}){} {}"sv, loc.file_name(), loc.line(), (message.empty() ? "" : ":"), message);
+        }
+    }
 
 }   // namespace piku
