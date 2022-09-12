@@ -5,9 +5,10 @@ Modules:
     ```cpp
     import piku.debug;
     
-    piku::trace("Hello {}", "World");
-    
-    // winmain.cpp(15): Hello World
+    piku::trace("Hello {}", "World"); // winmain.cpp(15): Hello World
+
+    piku::println("Hi, World"); // Hi, World
+    piku::print("no newline");
     ```
   - sha256
       ```cpp
