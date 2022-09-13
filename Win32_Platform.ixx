@@ -1,11 +1,12 @@
 module;
+
 #define WIN32_LEAN_AND_MEAN
 #include <Windows.h>
 
 #include <string_view>
 #include <type_traits>
 
-export module piku_win32;
+export module piku.win32;
 
 
 export namespace piku
@@ -20,6 +21,6 @@ export namespace piku
         auto func = GetProcAddress(lib, function.data());
         if (!func)
             return nullptr;
-        return reinterpret_cast<T>(func);
+        return reinterpret_cast<T>((FARPROC *)func);
     }
 }   // namespace piku

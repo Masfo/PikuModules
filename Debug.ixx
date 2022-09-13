@@ -1,4 +1,5 @@
 module;
+
 #define WIN32_LEAN_AND_MEAN
 #include <windows.h>
 
@@ -6,7 +7,9 @@ module;
 #include <iostream>
 #include <string_view>
 #include <source_location>
+
 export module piku.debug;
+
 
 using namespace std::string_view_literals;
 // println
