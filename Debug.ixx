@@ -69,7 +69,7 @@ export namespace piku
 
 #ifdef _DEBUG
     // Assert
-    template <typename... Args> void assert(bool expr, const FormatLocation fmt, Args &&...args) noexcept
+    template <typename... Args> void assert_msg(bool expr, const FormatLocation fmt, Args &&...args) noexcept
     {
         if (expr == false)
         {
@@ -79,16 +79,19 @@ export namespace piku
                     std::vformat(fmt.fmt, std::make_format_args(args...)));
 
             if (IsDebuggerPresent())
+            {
                 DebugBreak();
+                FatalExit(0);
+            }
         }
     }
     void assert(bool expr, const std::source_location &loc = std::source_location::current())
     {
-        assert(expr, {"", loc});
+        assert_msg(expr, {"", loc});
     }
 #else
-    void assert(bool, const std::string_view) {}
-    void assert(bool) {}
+    template <typename... Args> void assert_msg(bool, const std::string_view, Args...) {}
+    void                             assert(bool) {}
 #endif
 
 }   // namespace piku
