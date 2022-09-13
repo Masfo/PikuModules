@@ -67,17 +67,28 @@ export namespace piku
 
     void trace() noexcept { output_message("\n"); }
 
-
+#ifdef _DEBUG
     // Assert
-    void assert(bool                        test,
-                const std::string_view            message = {},
+    void assert(bool                        expr,
+                const std::string_view      message = {},
                 const std::source_location &loc     = std::source_location::current()) noexcept
     {
+
         // TODO: FormatLocation for multiple argument assert message
-        if (test)
+        if (expr == false)
         {
-            println("[ASSERT]\n {}({}){} {}"sv, loc.file_name(), loc.line(), (message.empty() ? "" : ":"), message);
+            println("\n***** Assert *****\n\n {}({}){} {}\n\n***** Assert *****\n"sv,
+                    loc.file_name(),
+                    loc.line(),
+                    (message.empty() ? "" : ":"),
+                    message);
+
+            if (IsDebuggerPresent())
+                DebugBreak();
         }
     }
+#else
+    void assert(bool, const std::string_view){};
+#endif
 
 }   // namespace piku
