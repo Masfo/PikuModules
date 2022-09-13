@@ -84,7 +84,7 @@ export namespace piku
         explicit Monitor(const std::filesystem::path &path) noexcept : m_current_path(path) {}
         Monitor() noexcept : Monitor(std::filesystem::current_path()) {}
 
-        bool filter(std::string_view filter) const noexcept { return false; }
+        bool filter(std::string_view) const noexcept { return false; }
 
         // Copy
         Monitor(Monitor const &)            = delete;
