@@ -1,22 +1,32 @@
 //
-// Link with: atls.lib ole32.lib oleaut32.lib uuid.lib
+// Link with: atls.lib oleaut32.lib
 //
 // Also remember to call CoInitialize or CoInitializeEx
 module;
+#pragma warning(push)
+#pragma warning(disable : 4668)
 #define WIN32_LEAN_AND_MEAN
 #include <windows.h>
+#pragma warning(pop)
 
-
-#pragma warning(suppress : 4471)
+#pragma warning(push)
+#pragma warning(disable : 4471 4365 4191 5204)
 #include <atlbase.h>
 //#import "libid:80cc9f66-e7d8-4ddd-85b6-d9e6cd0e93e2" version("9.0") lcid("0") raw_interfaces_only named_guids
+#pragma warning(pop)
 #include <cstdio>
-export module DTE;
 
+
+export module DTE;
+import piku.win32;
+
+
+const GUID GUID_NULL = {0, 0, 0, {0, 0, 0, 0, 0, 0, 0, 0}};
 namespace DTE
 {
+
 #pragma warning(push)
-#pragma warning(disable : 4471)
+#pragma warning(disable : 4471 5204)
 
     struct __declspec(uuid("04a72314-32e9-48e2-9b87-a63603454f3e")) _DTE : IDispatch
     {
@@ -78,17 +88,26 @@ namespace DTE
 
 #pragma warning(pop)
 
+    using Func_CLSIDFromProID  = HRESULT(LPCOLESTR, LPCLSID);
+    using Func_GetActiveObject = HRESULT(REFCLSID, void *, IUnknown **);
+
     auto GetDTE() -> CComPtr<_DTE>
     {
+        static auto CLSIDFromProgID = piku::LoadDynamic<Func_CLSIDFromProID *>("ole32.dll", "CLSIDFromProgID");
+        static auto GetActiveObject = piku::LoadDynamic<Func_GetActiveObject *>("oleaut32.dll", "GetActiveObject");
+
+        if (!CLSIDFromProgID || !GetActiveObject)
+            return nullptr;
+
         CLSID clsid;
 
         CComPtr<_DTE> dte;
-        HRESULT       result = ::CLSIDFromProgID(L"VisualStudio.DTE", &clsid);
+        HRESULT       result = CLSIDFromProgID(L"VisualStudio.DTE", &clsid);
         if (FAILED(result))
             return nullptr;
 
         CComPtr<IUnknown> punk;
-        result = ::GetActiveObject(clsid, nullptr, (IUnknown **)&punk);
+        result = GetActiveObject(clsid, nullptr, (IUnknown **)&punk);
         if (FAILED(result))
             return nullptr;
 
