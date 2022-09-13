@@ -28,7 +28,7 @@ namespace piku
         auto function_to_load = GetProcAddress(lib, function.data());
         assert(function_to_load != nullptr, "Failed to load function.");
 
-        if (function_to_load)
+        if (!function_to_load)
             return nullptr;
         return reinterpret_cast<T>((FARPROC *)function_to_load);
     }
