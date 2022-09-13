@@ -8,6 +8,21 @@
       <UniqueIdentifier>{4FC737F1-C7A5-4376-A066-2A32D752A2FF}</UniqueIdentifier>
       <Extensions>cpp;c;cc;cxx;c++;cppm;ixx;def;odl;idl;hpj;bat;asm;asmx</Extensions>
     </Filter>
+    <Filter Include="Modules\piku">
+      <UniqueIdentifier>{a30403e3-8ba8-4b8a-b0a3-8bf7fecc1354}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Modules\piku\hash">
+      <UniqueIdentifier>{8a3590cf-6663-43e9-bf06-918ac9f0f438}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Modules\DTE">
+      <UniqueIdentifier>{725dd3ac-654e-40ed-afe7-ea8adadcdf56}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Modules\piku\platform">
+      <UniqueIdentifier>{f5c8c05b-c826-472b-a175-fa1688256ae0}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Modules\piku\FileIO">
+      <UniqueIdentifier>{6c806f57-b957-4eb0-9b85-d1d1dfca7810}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <None Include="..\Piku\Test01\.clang-format">
@@ -21,25 +36,31 @@
     <ClInclude Include="include\buildnumber.h">
       <Filter>config</Filter>
     </ClInclude>
-    <ClInclude Include="DisabledWarningsMSVC.h">
+    <ClInclude Include="include\DisabledWarningsMSVC.h">
       <Filter>config</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="src\sha256.ixx">
+      <Filter>Modules\piku\hash</Filter>
+    </ClCompile>
+    <ClCompile Include="src\piku.ixx">
       <Filter>Modules</Filter>
+    </ClCompile>
+    <ClCompile Include="src\FileMonitor.ixx">
+      <Filter>Modules\piku\FileIO</Filter>
+    </ClCompile>
+    <ClCompile Include="src\debug.ixx">
+      <Filter>Modules\piku\platform</Filter>
+    </ClCompile>
+    <ClCompile Include="src\types.ixx">
+      <Filter>Modules</Filter>
+    </ClCompile>
+    <ClCompile Include="src\win32.ixx">
+      <Filter>Modules\piku\platform</Filter>
     </ClCompile>
     <ClCompile Include="src\DTE.ixx">
-      <Filter>Modules</Filter>
-    </ClCompile>
-    <ClCompile Include="Debug.ixx">
-      <Filter>Modules</Filter>
-    </ClCompile>
-    <ClCompile Include="piku.ixx">
-      <Filter>Modules</Filter>
-    </ClCompile>
-    <ClCompile Include="win32_platform.ixx">
-      <Filter>Modules</Filter>
+      <Filter>Modules\DTE</Filter>
     </ClCompile>
   </ItemGroup>
 </Project>
