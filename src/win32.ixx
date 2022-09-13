@@ -9,30 +9,88 @@ module;
 #include <type_traits>
 
 export module piku.win32;
-
-using namespace std::string_literals;
+import piku.debug;
 
 std::string GetLocalRegistryValue(std::string_view key, std::string_view value) noexcept;
 
-export namespace piku
+namespace piku
 {
-    template <typename T>
-    requires std::is_pointer_v<T> T LoadDynamic(std::string_view dll, std::string_view function)
+    export template <typename T>
+    requires std::is_pointer_v<T> T LoadDynamic(const std::string_view dll, const std::string_view function)
+    noexcept
     {
-        auto lib = LoadLibraryA(dll.data());
+        HMODULE lib = LoadLibraryA(dll.data());
+        assert(lib != nullptr, "Failed to load library.");
         if (!lib)
             return nullptr;
 
-        auto func = GetProcAddress(lib, function.data());
-        if (!func)
+
+        auto function_to_load = GetProcAddress(lib, function.data());
+        assert(function_to_load != nullptr, "Failed to load function.");
+
+        if (function_to_load)
             return nullptr;
-        return reinterpret_cast<T>((FARPROC *)func);
+        return reinterpret_cast<T>((FARPROC *)function_to_load);
     }
 
 
-    std::string OSVersion() noexcept
+    std::string GetLocalRegistryValue(std::string_view key, std::string_view value) noexcept
     {
-        const auto key = R"(SOFTWARE\Microsoft\Windows NT\CurrentVersion)"s;
+
+        using Func_RegOpenKeyExA    = LSTATUS(HKEY, LPCSTR, DWORD, REGSAM, PHKEY);
+        using Func_RegQueryValueExA = LSTATUS(HKEY, LPCSTR, LPDWORD, LPDWORD, LPBYTE, LPDWORD);
+
+        static auto RegOpenKeyExA_F    = piku::LoadDynamic<Func_RegOpenKeyExA *>("advapi32.dll", "RegOpenKeyExA");
+        static auto RegQueryValueExA_F = piku::LoadDynamic<Func_RegQueryValueExA *>("advapi32.dll", "RegQueryValueExA");
+
+        if (!RegOpenKeyExA_F || !RegQueryValueExA_F)
+            return "";
+
+        std::string ret;
+
+        HKEY hKey{};
+        auto dwError = RegOpenKeyExA_F(HKEY_LOCAL_MACHINE, key.data(), 0u, (REGSAM)KEY_READ | KEY_WOW64_64KEY, &hKey);
+        if (dwError != ERROR_SUCCESS)
+            return "";
+
+        ULONG cb   = 0;
+        ULONG Type = 0;
+
+        dwError = RegQueryValueExA(hKey, value.data(), nullptr, &Type, nullptr, &cb);
+        if (dwError != ERROR_SUCCESS)
+            return "";
+
+        if (Type == REG_DWORD)
+        {
+            unsigned long regvalue = 0;
+
+            dwError = RegQueryValueExA_F(hKey, value.data(), nullptr, &Type, (PBYTE)&regvalue, &cb);
+            if (dwError != ERROR_SUCCESS)
+                return "";
+
+            return std::to_string(regvalue);
+        }
+
+        if (Type == REG_SZ)
+        {
+            ret.resize(cb);
+
+            dwError = RegQueryValueExA_F(hKey, value.data(), nullptr, &Type, (PBYTE)ret.data(), &cb);
+            if (dwError != ERROR_SUCCESS)
+                return "";
+
+            ret.resize(ret.size() - 1);
+
+            return ret;
+        }
+
+        return "";
+    }
+
+
+    export std::string OSVersion() noexcept
+    {
+        const std::string key("SOFTWARE\\Microsoft\\Windows NT\\CurrentVersion");
 
         auto ProductName    = GetLocalRegistryValue(key, "ProductName");
         auto ReleaseId      = GetLocalRegistryValue(key, "ReleaseId");
@@ -48,49 +106,4 @@ export namespace piku
                            CurrentBuild,
                            UBR);
     }
-
 }   // namespace piku
-
-
-std::string GetLocalRegistryValue(std::string_view key, std::string_view value) noexcept
-{
-    std::string ret;
-
-    HKEY hKey{};
-    auto dwError = RegOpenKeyExA(HKEY_LOCAL_MACHINE, key.data(), 0u, (REGSAM)KEY_READ | KEY_WOW64_64KEY, &hKey);
-    if (dwError != ERROR_SUCCESS)
-        return "";
-
-    ULONG cb   = 0;
-    ULONG Type = 0;
-
-    dwError = RegQueryValueExA(hKey, value.data(), nullptr, &Type, nullptr, &cb);
-    if (dwError != ERROR_SUCCESS)
-        return "";
-
-    if (Type == REG_DWORD)
-    {
-        unsigned long regvalue = 0;
-
-        dwError = RegQueryValueExA(hKey, value.data(), nullptr, &Type, (PBYTE)&regvalue, &cb);
-        if (dwError != ERROR_SUCCESS)
-            return "";
-
-        return std::to_string(regvalue);
-    }
-
-    if (Type == REG_SZ)
-    {
-        ret.resize(cb);
-
-        dwError = RegQueryValueExA(hKey, value.data(), nullptr, &Type, (PBYTE)ret.data(), &cb);
-        if (dwError != ERROR_SUCCESS)
-            return "";
-
-        ret.resize(ret.size() - 1);
-
-        return ret;
-    }
-
-    return "";
-}
