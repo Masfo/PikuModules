@@ -23,6 +23,9 @@
     <Filter Include="Modules\piku\FileIO">
       <UniqueIdentifier>{6c806f57-b957-4eb0-9b85-d1d1dfca7810}</UniqueIdentifier>
     </Filter>
+    <Filter Include="Modules\piku\math">
+      <UniqueIdentifier>{d3857d3f-3424-44a5-9b62-eac3d2aaa66f}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <None Include="..\Piku\Test01\.clang-format">
