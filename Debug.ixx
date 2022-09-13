@@ -69,26 +69,26 @@ export namespace piku
 
 #ifdef _DEBUG
     // Assert
-    void assert(bool                        expr,
-                const std::string_view      message = {},
-                const std::source_location &loc     = std::source_location::current()) noexcept
+    template <typename... Args> void assert(bool expr, const FormatLocation fmt, Args &&...args) noexcept
     {
-
-        // TODO: FormatLocation for multiple argument assert message
         if (expr == false)
         {
-            println("\n***** Assert *****\n\n {}({}){} {}\n\n***** Assert *****\n"sv,
-                    loc.file_name(),
-                    loc.line(),
-                    (message.empty() ? "" : ":"),
-                    message);
+            println("\n***** Assert *****\n\n {}({}): {}\n\n***** Assert *****\n"sv,
+                    fmt.loc.file_name(),
+                    fmt.loc.line(),
+                    std::vformat(fmt.fmt, std::make_format_args(args...)));
 
             if (IsDebuggerPresent())
                 DebugBreak();
         }
     }
+    void assert(bool expr, const std::source_location &loc = std::source_location::current())
+    {
+        assert(expr, {"", loc});
+    }
 #else
-    void assert(bool, const std::string_view){};
+    void assert(bool, const std::string_view) {}
+    void assert(bool) {}
 #endif
 
 }   // namespace piku
