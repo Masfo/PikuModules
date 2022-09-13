@@ -38,7 +38,7 @@
     <ClCompile Include="piku.ixx">
       <Filter>Modules</Filter>
     </ClCompile>
-    <ClCompile Include="Win32_Platform.ixx">
+    <ClCompile Include="win32_platform.ixx">
       <Filter>Modules</Filter>
     </ClCompile>
   </ItemGroup>

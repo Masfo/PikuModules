@@ -151,7 +151,7 @@
       <UseStandardPreprocessor>true</UseStandardPreprocessor>
       <RuntimeLibrary>MultiThreaded</RuntimeLibrary>
       <EnableModules>true</EnableModules>
-      <CompileAs>CompileAsCppModule</CompileAs>
+      <CompileAs>CompileAsCpp</CompileAs>
       <ForcedIncludeFiles>$(ProjectDir)DisabledWarningsMSVC.h;%(ForcedIncludeFiles)</ForcedIncludeFiles>
       <TreatAngleIncludeAsExternal>false</TreatAngleIncludeAsExternal>
     </ClCompile>
@@ -164,6 +164,9 @@
     <PreBuildEvent>
       <Command>buildinc include\buildnumber.h $(ProjectName)</Command>
     </PreBuildEvent>
+    <Lib>
+      <Verbose>false</Verbose>
+    </Lib>
   </ItemDefinitionGroup>
   <ItemGroup>
     <None Include="..\Piku\Test01\.clang-format" />
@@ -176,22 +179,29 @@
   <ItemGroup>
     <ClCompile Include="Debug.ixx">
       <CompileAs Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">CompileAsCppModule</CompileAs>
+      <CompileAs Condition="'$(Configuration)|$(Platform)'=='Release|x64'">CompileAsCppModule</CompileAs>
+      <WarningLevel Condition="'$(Configuration)|$(Platform)'=='Release|x64'">EnableAllWarnings</WarningLevel>
     </ClCompile>
     <ClCompile Include="piku.ixx">
       <CompileAs Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">CompileAsCppModule</CompileAs>
+      <CompileAs Condition="'$(Configuration)|$(Platform)'=='Release|x64'">CompileAsCppModule</CompileAs>
     </ClCompile>
     <ClCompile Include="src\DTE.ixx">
       <WarningLevel Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">Level4</WarningLevel>
       <CompileAs Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">CompileAsCppModule</CompileAs>
       <ScanSourceForModuleDependencies Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">true</ScanSourceForModuleDependencies>
+      <CompileAs Condition="'$(Configuration)|$(Platform)'=='Release|x64'">CompileAsCppModule</CompileAs>
+      <WarningLevel Condition="'$(Configuration)|$(Platform)'=='Release|x64'">EnableAllWarnings</WarningLevel>
     </ClCompile>
     <ClCompile Include="src\sha256.ixx">
-      <CompileAs Condition="'$(Configuration)|$(Platform)'=='Release|x64'">Default</CompileAs>
+      <CompileAs Condition="'$(Configuration)|$(Platform)'=='Release|x64'">CompileAsCppModule</CompileAs>
       <CompileAs Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">CompileAsCpp</CompileAs>
       <ScanSourceForModuleDependencies Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">true</ScanSourceForModuleDependencies>
     </ClCompile>
-    <ClCompile Include="Win32_Platform.ixx">
+    <ClCompile Include="win32_platform.ixx">
       <CompileAs Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">CompileAsCppModule</CompileAs>
+      <CompileAs Condition="'$(Configuration)|$(Platform)'=='Release|x64'">CompileAsCppModule</CompileAs>
+      <WarningLevel Condition="'$(Configuration)|$(Platform)'=='Release|x64'">EnableAllWarnings</WarningLevel>
     </ClCompile>
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
