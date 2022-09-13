@@ -23,8 +23,7 @@ struct FormatLocation
     std::string_view     fmt;
     std::source_location loc;
     FormatLocation(const char *s, const std::source_location &l = std::source_location::current()) : fmt(s), loc(l) {}
-    FormatLocation(const std::string_view s, const std::source_location &l = std::source_location::current())
-        : fmt(s), loc(l)
+    FormatLocation(std::string_view s, const std::source_location &l = std::source_location::current()) : fmt(s), loc(l)
     {
     }
 };
@@ -40,16 +39,17 @@ export namespace piku
     }
 
     // print
-    void print(std::string_view fmt) noexcept { output_message(std::format("{}"sv, fmt)); }
+    void print(std::string_view fmt) noexcept { output_message(fmt); }
 
     // println
     template <typename... Args> void println(std::string_view fmt, Args &&...args) noexcept
     {
-        output_message(std::format("{}\n"sv, std::vformat(fmt, std::make_format_args(args...))));
+
+        output_message(std::vformat(fmt, std::make_format_args(args...)));
     }
 
     // println
-    void println(std::string_view fmt) noexcept { output_message(std::format("{}\n"sv, fmt)); }
+    void println(std::string_view fmt) noexcept { output_message(fmt); }
     void println() noexcept { output_message("\n"); }
 
 
@@ -72,29 +72,39 @@ export namespace piku
 
 #ifdef _DEBUG
     // Assert
-    template <typename... Args> void assert_msg(bool expr, const FormatLocation fmt, Args &&...args) noexcept
-    {
-        if (expr == false)
-        {
-            println("\n***** Assert *****\n\n {}({}): {}\n\n***** Assert *****\n"sv,
-                    fmt.loc.file_name(),
-                    fmt.loc.line(),
-                    std::vformat(fmt.fmt, std::make_format_args(args...)));
 
-            if (IsDebuggerPresent())
-            {
-                DebugBreak();
-                FatalExit(0);
-            }
+
+    void assert(bool                        expr,
+                std::string_view            message,
+                const std::source_location &loc = std::source_location::current()) noexcept
+    {
+        if (expr)
+            return;
+
+        println("\nAssert *****\n\n {}({}): ", loc.file_name(), loc.line());
+
+        println("{}", message);
+
+        println("\n\nAssert *****\n\n");
+
+        if (IsDebuggerPresent())
+        {
+            DebugBreak();
+            FatalExit(0);
         }
     }
-    void assert(bool expr, const std::source_location &loc = std::source_location::current())
+
+
+    void assert(bool expr, const std::source_location &loc = std::source_location::current()) noexcept
     {
-        assert_msg(expr, {"", loc});
+        assert(expr, "", loc);
     }
+
+
 #else
-    template <typename... Args> void assert_msg(bool, const std::string_view, Args...) {}
-    void                             assert(bool) {}
+    void assert(bool, std::string_view) noexcept {}
+    void assert(bool) noexcept {}
+
 #endif
 
 }   // namespace piku
