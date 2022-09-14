@@ -9,6 +9,10 @@ Modules:
 
     piku::println("Hi, World"); // Hi, World
     piku::print("no newline");
+
+    piku::assert_msg(true, "Message");
+    piku::assert(true);
+
     ```
   - **sha256**
       ```cpp

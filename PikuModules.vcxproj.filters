@@ -26,6 +26,9 @@
     <Filter Include="Modules\piku\math">
       <UniqueIdentifier>{d3857d3f-3424-44a5-9b62-eac3d2aaa66f}</UniqueIdentifier>
     </Filter>
+    <Filter Include="Modules\piku\FileIO\FileMap">
+      <UniqueIdentifier>{a9da24ae-ed0a-4d11-8671-ec9a32f31808}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <None Include="..\Piku\Test01\.clang-format">
@@ -56,14 +59,14 @@
     <ClCompile Include="src\debug.ixx">
       <Filter>Modules\piku\platform</Filter>
     </ClCompile>
-    <ClCompile Include="src\types.ixx">
-      <Filter>Modules</Filter>
-    </ClCompile>
     <ClCompile Include="src\win32.ixx">
       <Filter>Modules\piku\platform</Filter>
     </ClCompile>
     <ClCompile Include="src\DTE.ixx">
       <Filter>Modules\DTE</Filter>
+    </ClCompile>
+    <ClCompile Include="src\types.ixx">
+      <Filter>Modules\piku</Filter>
     </ClCompile>
   </ItemGroup>
 </Project>

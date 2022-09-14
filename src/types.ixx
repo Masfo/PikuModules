@@ -3,8 +3,7 @@ module;
 
 export module piku.types;
 
-
-export
+export namespace piku
 {
     using u8 = uint8_t;
     using i8 = int8_t;
@@ -20,5 +19,4 @@ export
 
     using f32 = float;
     using f64 = double;
-
 }   // namespace piku

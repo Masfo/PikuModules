@@ -20,13 +20,13 @@ namespace piku
     noexcept
     {
         HMODULE lib = LoadLibraryA(dll.data());
-        assert(lib != nullptr, "Failed to load library.");
+        assert_msg(lib != nullptr, "Failed to load library.");
         if (!lib)
             return nullptr;
 
 
         auto function_to_load = GetProcAddress(lib, function.data());
-        assert(function_to_load != nullptr, "Failed to load function.");
+        assert_msg(function_to_load != nullptr, "Failed to load function.");
 
         if (!function_to_load)
             return nullptr;

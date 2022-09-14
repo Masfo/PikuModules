@@ -31,7 +31,6 @@ struct FormatLocation
 export namespace piku
 {
 
-
     // print
     template <typename... Args> void print(std::string_view fmt, Args &&...args) noexcept
     {
@@ -74,9 +73,9 @@ export namespace piku
     // Assert
 
 
-    void assert(bool                        expr,
-                std::string_view            message,
-                const std::source_location &loc = std::source_location::current()) noexcept
+    void assert_msg(bool                        expr,
+                    std::string_view            message,
+                    const std::source_location &loc = std::source_location::current()) noexcept
     {
         if (expr)
             return;
@@ -97,12 +96,12 @@ export namespace piku
 
     void assert(bool expr, const std::source_location &loc = std::source_location::current()) noexcept
     {
-        assert(expr, "", loc);
+        assert_msg(expr, "", loc);
     }
 
 
 #else
-    void assert(bool, std::string_view) noexcept {}
+    void assert_msg(bool, std::string_view) noexcept {}
     void assert(bool) noexcept {}
 
 #endif

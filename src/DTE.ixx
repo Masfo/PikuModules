@@ -2,6 +2,8 @@
 // Link with: atls.lib oleaut32.lib
 //
 // Also remember to call CoInitialize or CoInitializeEx
+// ~~29KB binary
+
 module;
 #pragma warning(push)
 #pragma warning(disable : 4668)
@@ -10,7 +12,7 @@ module;
 #pragma warning(pop)
 
 #pragma warning(push)
-#pragma warning(disable : 4471 4365 4191 5204)
+#pragma warning(disable : 4775 4310 4471 4365 4191 5204)
 #include <atlbase.h>
 //#import "libid:80cc9f66-e7d8-4ddd-85b6-d9e6cd0e93e2" version("9.0") lcid("0") raw_interfaces_only named_guids
 #pragma warning(pop)
