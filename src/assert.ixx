@@ -43,7 +43,7 @@ export void assert(bool expr, const std::source_location &loc = std::source_loca
 
 
 #else
-void assert_msg(bool, std::string_view) noexcept {}
-void assert(bool) noexcept {}
+export void assert_msg(bool, std::string_view) noexcept {}
+export void assert(bool) noexcept {}
 
 #endif
