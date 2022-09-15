@@ -10,6 +10,7 @@ module;
 
 export module piku.win32;
 import piku.assert;
+import piku.types;
 std::string GetLocalRegistryValue(std::string_view key, std::string_view value) noexcept;
 
 namespace piku
@@ -110,8 +111,8 @@ namespace piku
     export std::wstring to_wide(std::string_view in) noexcept
     {
         std::wstring wret;
-        int          size = MultiByteToWideChar(CP_UTF8, 0, in.data(), -1, nullptr, 0);
-        wret.resize(size);
+        auto         size = MultiByteToWideChar(CP_UTF8, 0, in.data(), -1, nullptr, 0);
+        wret.resize(as<size_t>(size));
         if (size = MultiByteToWideChar(CP_UTF8, 0, in.data(), -1, wret.data(), size); size == 0)
             return {};
         return wret;

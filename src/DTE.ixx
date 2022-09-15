@@ -137,7 +137,7 @@ namespace DTE
     export bool GotoLine(const wchar_t *filename, unsigned int line)
     {
         wchar_t quoted_filename[MAX_PATH]{0};
-        if (const auto result = std::format_to_n(quoted_filename, std::size(quoted_filename), L"\"{}\"", filename);
+        if (const auto result = std::format_to_n(quoted_filename, std::ssize(quoted_filename), L"\"{}\"", filename);
             result.size <= 0)
             return false;
 
@@ -145,7 +145,7 @@ namespace DTE
             return false;
 
         wchar_t linetext[64]{0};
-        if (const auto result = std::format_to_n(linetext, std::size(linetext), L"{}", line); result.size <= 0)
+        if (const auto result = std::format_to_n(linetext, std::ssize(linetext), L"{}", line); result.size <= 0)
             return false;
 
         if (ExecuteCommand(L"Edit.Goto", linetext) == false)

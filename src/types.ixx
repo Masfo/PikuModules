@@ -19,4 +19,7 @@ export namespace piku
 
     using f32 = float;
     using f64 = double;
+
+    template <typename T, typename U> T as(U u) { return static_cast<T>(u); }
+
 }   // namespace piku
