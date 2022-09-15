@@ -36,7 +36,7 @@ export void assert_msg(bool                        expr,
 }
 
 
-export void assert(bool expr, const std::source_location &loc = std::source_location::current()) noexcept
+export void assert(bool expr = false, const std::source_location &loc = std::source_location::current()) noexcept
 {
     assert_msg(expr, "", loc);
 }
