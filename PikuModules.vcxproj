@@ -182,6 +182,7 @@
     <ClInclude Include="include\DisabledWarningsMSVC.h" />
   </ItemGroup>
   <ItemGroup>
+    <ClCompile Include="src\assert.ixx" />
     <ClCompile Include="src\debug.ixx">
       <CompileAs Condition="'$(Configuration)|$(Platform)'=='Release|x64'">CompileAsCppModule</CompileAs>
       <CompileAs Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">CompileAsCppModule</CompileAs>

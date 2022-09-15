@@ -16,7 +16,7 @@ module;
 #include <atlbase.h>
 //#import "libid:80cc9f66-e7d8-4ddd-85b6-d9e6cd0e93e2" version("9.0") lcid("0") raw_interfaces_only named_guids
 #pragma warning(pop)
-#include <cstdio>
+#include <format>
 
 
 export module DTE;
@@ -136,28 +136,27 @@ namespace DTE
 
     export bool GotoLine(const wchar_t *filename, unsigned int line)
     {
-        wchar_t quoted_filename[MAX_PATH]{};
-        if (swprintf_s(quoted_filename, MAX_PATH, L"\"%s\"", filename) <= 0)
+        wchar_t quoted_filename[MAX_PATH]{0};
+        if (const auto result = std::format_to_n(quoted_filename, std::size(quoted_filename), L"\"{}\"", filename);
+            result.size <= 0)
             return false;
 
         if (ExecuteCommand(L"File.OpenFile", quoted_filename) == false)
             return false;
 
-        wchar_t linetext[64]{};
-        int     size = swprintf_s(linetext, 64, L"%d", line);
-        if (size <= 0 || ExecuteCommand(L"Edit.Goto", linetext) == false)
+        wchar_t linetext[64]{0};
+        if (const auto result = std::format_to_n(linetext, std::size(linetext), L"{}", line); result.size <= 0)
+            return false;
+
+        if (ExecuteCommand(L"Edit.Goto", linetext) == false)
             return false;
 
         return true;
     }
 
-    export bool GotoLine(const char *filename, unsigned int line)
+    export bool GotoLine(char const *filename, unsigned int line)
     {
-        wchar_t wfilename[MAX_PATH]{};
-        if (swprintf_s(wfilename, MAX_PATH, L"%S", filename) <= 0)
-            return false;
-
-        return GotoLine(wfilename, line);
+        return GotoLine(piku::to_wide(filename).c_str(), line);
     }
 
 }   // namespace DTE
