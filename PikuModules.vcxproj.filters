@@ -29,9 +29,6 @@
     <Filter Include="Modules\piku\FileIO\FileMap">
       <UniqueIdentifier>{a9da24ae-ed0a-4d11-8671-ec9a32f31808}</UniqueIdentifier>
     </Filter>
-    <Filter Include="Modules\piku\assert">
-      <UniqueIdentifier>{e61df296-0a0f-4b82-9632-659f53cefecc}</UniqueIdentifier>
-    </Filter>
   </ItemGroup>
   <ItemGroup>
     <None Include="..\Piku\Test01\.clang-format">
@@ -70,9 +67,6 @@
     </ClCompile>
     <ClCompile Include="src\types.ixx">
       <Filter>Modules\piku</Filter>
-    </ClCompile>
-    <ClCompile Include="src\assert.ixx">
-      <Filter>Modules\piku\assert</Filter>
     </ClCompile>
   </ItemGroup>
 </Project>

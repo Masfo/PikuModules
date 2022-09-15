@@ -9,8 +9,13 @@ module;
 #include <source_location>
 
 export module piku.debug;
-using namespace std::string_view_literals;
 
+
+using namespace std::string_view_literals;
+// println
+// print
+// trace
+// assert
 void output_message(const std::string_view message) { OutputDebugStringA(message.data()); }
 
 struct FormatLocation
@@ -25,7 +30,6 @@ struct FormatLocation
 
 export namespace piku
 {
-
 
     // print
     template <typename... Args> void print(std::string_view fmt, Args &&...args) noexcept
@@ -65,5 +69,41 @@ export namespace piku
 
     void trace() noexcept { output_message("\n"); }
 
+#ifdef _DEBUG
+    // Assert
+
+
+    void assert_msg(bool                        expr,
+                    std::string_view            message,
+                    const std::source_location &loc = std::source_location::current()) noexcept
+    {
+        if (expr)
+            return;
+
+        println("\nAssert *****\n\n {}({}): ", loc.file_name(), loc.line());
+
+        println("{}", message);
+
+        println("\n\nAssert *****\n\n");
+
+        if (IsDebuggerPresent())
+        {
+            DebugBreak();
+            FatalExit(0);
+        }
+    }
+
+
+    void assert(bool expr, const std::source_location &loc = std::source_location::current()) noexcept
+    {
+        assert_msg(expr, "", loc);
+    }
+
+
+#else
+    void assert_msg(bool, std::string_view) noexcept {}
+    void assert(bool) noexcept {}
+
+#endif
 
 }   // namespace piku
