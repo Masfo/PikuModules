@@ -9,12 +9,13 @@ module;
 #include <type_traits>
 
 export module piku.win32;
-import piku.debug;
-
+import piku.assert;
 std::string GetLocalRegistryValue(std::string_view key, std::string_view value) noexcept;
 
 namespace piku
 {
+
+
     export template <typename T>
     requires std::is_pointer_v<T> T LoadDynamic(const std::string_view dll, const std::string_view function)
     noexcept
@@ -32,7 +33,6 @@ namespace piku
             return nullptr;
         return reinterpret_cast<T>((FARPROC *)function_to_load);
     }
-
 
     std::string GetLocalRegistryValue(std::string_view key, std::string_view value) noexcept
     {
@@ -106,4 +106,15 @@ namespace piku
                            CurrentBuild,
                            UBR);
     }
+
+    export std::wstring to_wide(std::string_view in) noexcept
+    {
+        std::wstring wret;
+        int          size = MultiByteToWideChar(CP_UTF8, 0, in.data(), -1, nullptr, 0);
+        wret.resize(size);
+        if (size = MultiByteToWideChar(CP_UTF8, 0, in.data(), -1, wret.data(), size); size == 0)
+            return {};
+        return wret;
+    }
+
 }   // namespace piku
