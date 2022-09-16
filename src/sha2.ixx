@@ -23,6 +23,14 @@ namespace hash
     };
 
 
+    template <typename T, typename U> T load_bigendian(U const *bytes)
+    {
+        T ret{};
+        std::memcpy(&ret, bytes, sizeof(T));
+        return std::byteswap(ret);
+    }
+
+
     export class [[nodiscard("You are getting SHA256 digest but not using it.")]] sha256digest final
     {
     public:
@@ -102,8 +110,7 @@ namespace hash
 
             // copy chunk into first 16 words w[0..15] of the message schedule array
             for (uint32_t i = 0, j = 0; i < 16; i++, j += 4)
-                w[i] = static_cast<uint32_t>((m_block[j] << 24u) | (m_block[j + 1u] << 16u) | (m_block[j + 2u] << 8u)
-                                             | (m_block[j + 3u]));
+                w[i] = load_bigendian<uint32_t>(&m_block[j]);
 
             for (uint32_t i = 16; i < SHA256_ROUNDS; i++)
             {
@@ -276,25 +283,15 @@ namespace hash
         static uint64_t sig0(uint64_t x) noexcept { return (std::rotr(x, 1) ^ std::rotr(x, 8) ^ (x >> 7)); }
         static uint64_t sig1(uint64_t x) noexcept { return (std::rotr(x, 19) ^ std::rotr(x, 61) ^ (x >> 6)); }
 
+
         void transform()   // Process the message in successive 512-bit chunks
         {
             uint64_t                maj{}, S0{}, ch{}, S1{}, temp1{}, temp2{}, w[SHA512_ROUNDS]{0};
             std::array<uint64_t, 8> state;
 
             // copy chunk into first 16 words w[0..15] of the message schedule array
-            // clang-format off
             for (uint64_t i = 0, j = 0; i < 16; i++, j += 8)
-            {
-                w[i] = static_cast<uint64_t>(((uint64_t)(m_block[j + 0u]) << 56u) |
-                                             ((uint64_t)(m_block[j + 1u]) << 48u) |
-                                             ((uint64_t)(m_block[j + 2u]) << 40u) |
-                                             ((uint64_t)(m_block[j + 3u]) << 32u) |
-                                             ((uint64_t)(m_block[j + 4u]) << 24u) | 
-                                             ((uint64_t)(m_block[j + 5u]) << 16u) | 
-                                             ((uint64_t)(m_block[j + 6u]) << 8u)  | 
-                                             ((uint64_t)(m_block[j + 7u]) << 0u));
-            }
-            // clang-format on
+                w[i] = load_bigendian<uint64_t>(&m_block[j]);
 
 
             // Initialize working variables to current hash value
