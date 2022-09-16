@@ -23,7 +23,7 @@ namespace hash
     };
 
 
-    template <typename T, typename U> T load_bigendian(U const *bytes)
+    template <typename T, typename U> T load_bigendian(U const &bytes)
     {
         T ret{};
         std::memcpy(&ret, bytes, sizeof(T));
@@ -39,6 +39,7 @@ namespace hash
     std::string to_string(Uppercase uppercase = Uppercase::No) const noexcept
         // clang-format on
         {
+
             return std::vformat(
                 std::format("{0}{0}{0}{0}{0}{0}{0}{0}", uppercase == Uppercase::No ? "{:08x}" : "{:08X}"),
                 std::make_format_args(
@@ -213,8 +214,9 @@ namespace hash
     std::string to_string(Uppercase uppercase = Uppercase::No) const noexcept
         // clang-format on
         {
+
             return std::vformat(
-                std::format("{0}{0}{0}{0}{0}{0}{0}{0}", uppercase == Uppercase::No ? "{:08x}" : "{:08X}"),
+                std::format("{0}{0}{0}{0}{0}{0}{0}{0}", uppercase == Uppercase::No ? "{:016x}" : "{:016X}"),
                 std::make_format_args(
                     binary[0], binary[1], binary[2], binary[3], binary[4], binary[5], binary[6], binary[7]));
         }
