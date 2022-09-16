@@ -8,6 +8,7 @@ module;
 
 export module hash.sha2;
 
+using namespace std::string_view_literals;
 namespace hash
 {
 
@@ -28,26 +29,16 @@ namespace hash
     template <typename Type> class [[nodiscard("You are not using your hash digest.")]] shadigest final
     {
     public:
-        // clang-format off
-    [[nodiscard("You are not using your hash digest.")]]
-    std::string to_string(Uppercase uppercase = Uppercase::No) const noexcept
-        // clang-format on
+        [[nodiscard("You are not using your hash digest.")]] std::string to_string(const Uppercase uppercase
+                                                                                   = Uppercase::No) const noexcept
         {
-            if constexpr (sizeof(Type) == 4)
-            {
+            constexpr static std::array fmt_array = {"{:08x}"sv, "{:08X}"sv, "{:016x}"sv, "{:016X}"sv};
+            const int                   index     = (sizeof(Type) == 4 ? 0 : 2) + uppercase;
 
-                return std::vformat(
-                    std::format("{0}{0}{0}{0}{0}{0}{0}{0}", uppercase == Uppercase::No ? "{:08x}" : "{:08X}"),
-                    std::make_format_args(
-                        binary[0], binary[1], binary[2], binary[3], binary[4], binary[5], binary[6], binary[7]));
-            }
-            else if constexpr (sizeof(Type) == 8)
-            {
-                return std::vformat(
-                    std::format("{0}{0}{0}{0}{0}{0}{0}{0}", uppercase == Uppercase::No ? "{:016x}" : "{:016X}"),
-                    std::make_format_args(
-                        binary[0], binary[1], binary[2], binary[3], binary[4], binary[5], binary[6], binary[7]));
-            }
+            return std::vformat(
+                std::format("{0}{0}{0}{0}{0}{0}{0}{0}", fmt_array[index]),
+                std::make_format_args(
+                    binary[0], binary[1], binary[2], binary[3], binary[4], binary[5], binary[6], binary[7]));
         }
 
         Type operator[](int index) const noexcept { return binary[static_cast<size_t>(index)]; }
@@ -57,6 +48,8 @@ namespace hash
         std::array<Type, 8> binary;
     };
 
+
+    // SHA256 -----------------------------------------------------------------------------------------------
 
     export using sha256digest = shadigest<uint32_t>;
     static_assert(sizeof(sha256digest) == 32);
@@ -208,10 +201,9 @@ namespace hash
     };
 
     static_assert(sizeof(sha256) == 112);
-    constexpr int sha256_size = sizeof(sha256);
 
 
-    // SHA512
+    // SHA512 -----------------------------------------------------------------------------------------------
 
     export using sha512digest = shadigest<uint64_t>;
     static_assert(sizeof(sha512digest) == 64);
@@ -381,7 +373,6 @@ namespace hash
     };
 
     static_assert(sizeof(sha512) == 208);
-    constexpr auto s = sizeof(sha512);
 
 
 }   // namespace hash
