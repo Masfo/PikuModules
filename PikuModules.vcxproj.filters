@@ -50,7 +50,7 @@
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
-    <ClCompile Include="src\sha256.ixx">
+    <ClCompile Include="src\sha2.ixx">
       <Filter>Modules\piku\hash</Filter>
     </ClCompile>
     <ClCompile Include="src\piku.ixx">
