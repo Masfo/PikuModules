@@ -11,11 +11,6 @@ export module hash.sha2;
 namespace hash
 {
 
-    constexpr uint32_t SHA256_CHUNK_SIZE_IN_BITS = 512;
-    constexpr uint32_t SHA256_BLOCK_SIZE         = SHA256_CHUNK_SIZE_IN_BITS / 8;
-    constexpr uint32_t SHA256_BINARY_BLOCK_SIZE  = SHA256_BLOCK_SIZE / 8;
-    constexpr uint32_t SHA256_ROUNDS             = 64;
-
 
     export enum Uppercase : uint8_t {
         No,
@@ -30,29 +25,40 @@ namespace hash
         return std::byteswap(ret);
     }
 
-
-    export class [[nodiscard("You are getting SHA256 digest but not using it.")]] sha256digest final
+    template <typename Type> class [[nodiscard("You are not using your hash digest.")]] shadigest final
     {
     public:
         // clang-format off
-    [[nodiscard("You are getting the SHA256 digest string but not using it.")]]
+    [[nodiscard("You are not using your hash digest.")]]
     std::string to_string(Uppercase uppercase = Uppercase::No) const noexcept
         // clang-format on
         {
+            if constexpr (sizeof(Type) == 4)
+            {
 
-            return std::vformat(
-                std::format("{0}{0}{0}{0}{0}{0}{0}{0}", uppercase == Uppercase::No ? "{:08x}" : "{:08X}"),
-                std::make_format_args(
-                    binary[0], binary[1], binary[2], binary[3], binary[4], binary[5], binary[6], binary[7]));
+                return std::vformat(
+                    std::format("{0}{0}{0}{0}{0}{0}{0}{0}", uppercase == Uppercase::No ? "{:08x}" : "{:08X}"),
+                    std::make_format_args(
+                        binary[0], binary[1], binary[2], binary[3], binary[4], binary[5], binary[6], binary[7]));
+            }
+            else if constexpr (sizeof(Type) == 8)
+            {
+                return std::vformat(
+                    std::format("{0}{0}{0}{0}{0}{0}{0}{0}", uppercase == Uppercase::No ? "{:016x}" : "{:016X}"),
+                    std::make_format_args(
+                        binary[0], binary[1], binary[2], binary[3], binary[4], binary[5], binary[6], binary[7]));
+            }
         }
 
-        uint32_t operator[](int index) const noexcept { return binary[static_cast<uint64_t>(index)]; }
+        Type operator[](int index) const noexcept { return binary[static_cast<size_t>(index)]; }
 
-        bool operator==(const sha256digest &that) const noexcept { return binary == that.binary; }
+        bool operator==(const shadigest<Type> &that) const noexcept { return binary == that.binary; }
 
-        std::array<uint32_t, SHA256_BINARY_BLOCK_SIZE> binary{};
+        std::array<Type, 8> binary;
     };
 
+
+    export using sha256digest = shadigest<uint32_t>;
     static_assert(sizeof(sha256digest) == 32);
 
 
@@ -80,6 +86,10 @@ namespace hash
             return ret;
         }
 
+        static constexpr uint32_t SHA256_CHUNK_SIZE_IN_BITS = 512;
+        static constexpr uint32_t SHA256_BLOCK_SIZE         = SHA256_CHUNK_SIZE_IN_BITS / 8;
+        static constexpr uint32_t SHA256_ROUNDS             = 64;
+
     private:
         template <typename T> void generic_update(const std::span<T> data) noexcept
         {
@@ -106,8 +116,8 @@ namespace hash
 
         void transform()   // Process the message in successive 512-bit chunks
         {
-            uint32_t maj{}, S0{}, ch{}, S1{}, temp1{}, temp2{}, w[SHA256_ROUNDS]{0};
-            std::array<uint32_t, SHA256_BINARY_BLOCK_SIZE> state;
+            uint32_t                maj{}, S0{}, ch{}, S1{}, temp1{}, temp2{}, w[SHA256_ROUNDS]{0};
+            std::array<uint32_t, 8> state;
 
             // copy chunk into first 16 words w[0..15] of the message schedule array
             for (uint32_t i = 0, j = 0; i < 16; i++, j += 4)
@@ -181,10 +191,10 @@ namespace hash
             transform();
         }
 
-        std::array<uint8_t, SHA256_BLOCK_SIZE>         m_block;
-        std::array<uint32_t, SHA256_BINARY_BLOCK_SIZE> m_state;
-        uint64_t                                       m_bitlen;
-        uint32_t                                       m_blockindex;
+        std::array<uint8_t, SHA256_BLOCK_SIZE> m_block;
+        std::array<uint32_t, 8>                m_state;
+        uint64_t                               m_bitlen;
+        uint32_t                               m_blockindex;
 
         static constexpr std::array<uint32_t, 64> K
             = {0x428a2f98, 0x71374491, 0xb5c0fbcf, 0xe9b5dba5, 0x3956c25b, 0x59f111f1, 0x923f82a4, 0xab1c5ed5,
@@ -198,36 +208,12 @@ namespace hash
     };
 
     static_assert(sizeof(sha256) == 112);
+    constexpr int sha256_size = sizeof(sha256);
 
 
     // SHA512
 
-    constexpr uint32_t SHA512_CHUNK_SIZE_IN_BITS = 1024;
-    constexpr uint32_t SHA512_BLOCK_SIZE         = SHA512_CHUNK_SIZE_IN_BITS / 8;
-    constexpr uint32_t SHA512_ROUNDS             = 80;
-
-    export class [[nodiscard("You are getting SHA512 digest but not using it.")]] sha512digest final
-    {
-    public:
-        // clang-format off
-    [[nodiscard("You are getting the SHA512 digest string but not using it.")]]
-    std::string to_string(Uppercase uppercase = Uppercase::No) const noexcept
-        // clang-format on
-        {
-
-            return std::vformat(
-                std::format("{0}{0}{0}{0}{0}{0}{0}{0}", uppercase == Uppercase::No ? "{:016x}" : "{:016X}"),
-                std::make_format_args(
-                    binary[0], binary[1], binary[2], binary[3], binary[4], binary[5], binary[6], binary[7]));
-        }
-
-        uint64_t operator[](int index) const noexcept { return binary[static_cast<uint64_t>(index)]; }
-
-        bool operator==(const sha512digest &that) const noexcept { return binary == that.binary; }
-
-        std::array<uint64_t, 8> binary{};
-    };
-
+    export using sha512digest = shadigest<uint64_t>;
     static_assert(sizeof(sha512digest) == 64);
 
 
@@ -237,14 +223,15 @@ namespace hash
         sha512() { reset(); }
         void reset() noexcept
         {
-            m_state      = {0x6a09e667f3bcc908,
-                            0xbb67ae8584caa73b,
-                            0x3c6ef372fe94f82b,
-                            0xa54ff53a5f1d36f1,
-                            0x510e527fade682d1,
-                            0x9b05688c2b3e6c1f,
-                            0x1f83d9abfb41bd6b,
-                            0x5be0cd19137e2179};
+            m_state = {0x6a09e667f3bcc908,
+                       0xbb67ae8584caa73b,
+                       0x3c6ef372fe94f82b,
+                       0xa54ff53a5f1d36f1,
+                       0x510e527fade682d1,
+                       0x9b05688c2b3e6c1f,
+                       0x1f83d9abfb41bd6b,
+                       0x5be0cd19137e2179};
+
             m_block      = {};
             m_bitlen     = 0ULL;
             m_blockindex = 0ULL;
@@ -263,6 +250,10 @@ namespace hash
         }
 
     private:
+        static constexpr uint32_t SHA512_CHUNK_SIZE_IN_BITS = 1024;
+        static constexpr uint32_t SHA512_BLOCK_SIZE         = SHA512_CHUNK_SIZE_IN_BITS / 8;
+        static constexpr uint32_t SHA512_ROUNDS             = 80;
+
         template <typename T> void generic_update(const std::span<T> data) noexcept
         {
             if (data.empty())
