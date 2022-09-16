@@ -20,6 +20,19 @@ export namespace piku
     using f32 = float;
     using f64 = double;
 
+    constexpr u8 operator"" _u8(const u64 value) noexcept { return static_cast<u8>(value & 0xFF); }
+    constexpr i8 operator"" _i8(const u64 value) noexcept { return static_cast<i8>(value & 0xFF); }
+
+    constexpr u16 operator"" _u16(const u64 value) noexcept { return static_cast<u16>(value & 0xFF); }
+    constexpr i16 operator"" _i16(const u64 value) noexcept { return static_cast<i16>(value & 0xFF); }
+
+    constexpr u32 operator"" _u32(const u64 value) noexcept { return static_cast<u32>(value & 0xFF); }
+    constexpr i32 operator"" _i32(const u64 value) noexcept { return static_cast<i32>(value & 0xFF); }
+
+    constexpr u64 operator"" _u64(const u64 value) noexcept { return static_cast<u64>(value & 0xFF); }
+    constexpr i64 operator"" _i64(const u64 value) noexcept { return static_cast<i64>(value & 0xFF); }
+
+
     template <typename T, typename U> T as(U u) { return static_cast<T>(u); }
 
 }   // namespace piku
