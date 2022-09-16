@@ -26,14 +26,17 @@ namespace hash
         return std::byteswap(ret);
     }
 
-    template <typename Type> class [[nodiscard("You are not using your hash digest.")]] shadigest final
+
+    template <typename Type>
+    requires std::is_integral_v<Type>
+    class [[nodiscard("You are not using your hash digest.")]] shadigest final
     {
     public:
         [[nodiscard("You are not using your hash digest.")]] std::string to_string(const Uppercase uppercase
                                                                                    = Uppercase::No) const noexcept
         {
-            constexpr static std::array fmt_array = {"{:08x}"sv, "{:08X}"sv, "{:016x}"sv, "{:016X}"sv};
-            const int                   index     = (sizeof(Type) == 4 ? 0 : 2) + uppercase;
+            constexpr static std::array fmt_array{"{:08x}"sv, "{:08X}"sv, "{:016x}"sv, "{:016X}"sv};
+            const int                   index = (sizeof(Type) == 4 ? 0 : 2) + uppercase;
 
             return std::vformat(
                 std::format("{0}{0}{0}{0}{0}{0}{0}{0}", fmt_array[index]),
@@ -52,6 +55,7 @@ namespace hash
     // SHA256 -----------------------------------------------------------------------------------------------
 
     export using sha256digest = shadigest<uint32_t>;
+
     static_assert(sizeof(sha256digest) == 32);
 
 
