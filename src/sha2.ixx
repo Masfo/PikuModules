@@ -13,7 +13,7 @@ namespace hash
 {
 
 
-    export enum Uppercase : uint8_t {
+    export enum class Uppercase : uint8_t {
         No,
         Yes,
     };
@@ -36,7 +36,7 @@ namespace hash
                                                                                    = Uppercase::No) const noexcept
         {
             constexpr static std::array fmt_array{"{:08x}"sv, "{:08X}"sv, "{:016x}"sv, "{:016X}"sv};
-            const int                   index = (sizeof(Type) == 4 ? 0 : 2) + uppercase;
+            const int                   index = (sizeof(Type) == 4 ? 0 : 2) + (uppercase == Uppercase::No ? 0 : 1);
 
             return std::vformat(
                 std::format("{0}{0}{0}{0}{0}{0}{0}{0}", fmt_array[index]),
