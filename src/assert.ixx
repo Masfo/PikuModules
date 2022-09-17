@@ -1,4 +1,5 @@
 module;
+#include "prototyping_markers.h"
 
 #define WIN32_LEAN_AND_MEAN
 #include <Windows.h>
@@ -7,6 +8,14 @@ module;
 #include <iostream>
 #include <string_view>
 #include <source_location>
+#include <version>
+#ifdef __cpp_lib_stacktrace
+#    include <stacktrace>
+#    define HAS_STACKTRACE
+#    pragma FIX("We have stacktrace, remove guards")
+
+#endif
+
 
 export module piku.assert;
 
@@ -22,11 +31,20 @@ export void assert_msg(bool                        expr,
     if (expr)
         return;
 
-    println("\nAssert *****\n\n {}({}): ", loc.file_name(), loc.line());
+    println("\nAssert *****\n\n {}({}): {}", loc.file_name(), loc.line(), message);
 
-    println("{}", message);
+#    ifdef HAS_STACKTRACE
+    auto traces = std::stacktrace::current();
 
-    println("\n\nAssert *****\n\n");
+    for (const auto &trace : traces)
+    {
+        if (trace.source_file().contains(__FILE__))
+            continue;
+
+        println("{}({}): {}", trace.source_file(), trace.source_line(), trace.description());
+    }
+#    endif
+    println("\nAssert *****\n\n");
 
     if (IsDebuggerPresent())
     {
