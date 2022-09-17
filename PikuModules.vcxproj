@@ -73,12 +73,12 @@
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|x64'">
     <TargetName>$(ProjectName)</TargetName>
     <TargetExt>.lib</TargetExt>
-    <IncludePath>E:\project\!cpp\fmt\include\;$(IncludePath)</IncludePath>
+    <IncludePath>$(ProjectDir)include\;$(IncludePath)</IncludePath>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">
     <AllProjectBMIsArePublic>false</AllProjectBMIsArePublic>
-    <IncludePath>E:\project\!cpp\fmt\include\;$(IncludePath)</IncludePath>
-    <AllProjectIncludesArePublic>false</AllProjectIncludesArePublic>
+    <IncludePath>$(ProjectDir)include\;$(IncludePath)</IncludePath>
+    <AllProjectIncludesArePublic>true</AllProjectIncludesArePublic>
     <PublicIncludeDirectories>
     </PublicIncludeDirectories>
     <SourcePath>$(SourcePath)</SourcePath>
