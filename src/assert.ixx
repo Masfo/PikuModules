@@ -1,5 +1,4 @@
 module;
-#include "prototyping_markers.h"
 
 #define WIN32_LEAN_AND_MEAN
 #include <Windows.h>
@@ -9,6 +8,7 @@ module;
 #include <string_view>
 #include <source_location>
 #include <version>
+#include "prototyping_markers.h"
 #ifdef __cpp_lib_stacktrace
 #    include <stacktrace>
 #    define HAS_STACKTRACE
