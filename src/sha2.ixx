@@ -9,7 +9,6 @@ module;
 export module hash.sha2;
 import piku.types;
 using namespace piku;
-;
 using namespace std::string_view_literals;
 
 namespace hash
