@@ -28,28 +28,28 @@ export void assert_msg(bool                        expr,
                        std::string_view            message,
                        const std::source_location &loc = std::source_location::current()) noexcept
 {
-    if (expr)
-        return;
-
-    println("\nAssert *****\n\n {}({}): {}", loc.file_name(), loc.line(), message);
+    if (!expr)
+    {
+        println("\nAssert *****\n\n {}({}): {}", loc.file_name(), loc.line(), message);
 
 #    ifdef HAS_STACKTRACE
-    auto traces = std::stacktrace::current();
+        auto traces = std::stacktrace::current();
 
-    for (const auto &trace : traces)
-    {
-        if (trace.source_file().contains(__FILE__))
-            continue;
+        for (const auto &trace : traces)
+        {
+            if (trace.source_file().contains(__FILE__))
+                continue;
 
-        println("{}({}): {}", trace.source_file(), trace.source_line(), trace.description());
-    }
+            println("{}({}): {}", trace.source_file(), trace.source_line(), trace.description());
+        }
 #    endif
-    println("\nAssert *****\n\n");
+        println("\nAssert *****\n\n");
 
-    if (IsDebuggerPresent())
-    {
-        DebugBreak();
-        FatalExit(0);
+        if (IsDebuggerPresent())
+        {
+            DebugBreak();
+            FatalExit(0);
+        }
     }
 }
 

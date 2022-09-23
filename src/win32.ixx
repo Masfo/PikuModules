@@ -26,7 +26,6 @@ namespace piku
         if (!lib)
             return nullptr;
 
-        int d = as<int>(3.5);
 
         auto function_to_load = GetProcAddress(lib, function.data());
         assert_msg(function_to_load != nullptr, "Failed to load function.");
