@@ -5,3 +5,5 @@ Release
 /.vs/PikuModules/v17
 *.ifc
 /.vs/VSWorkspaceState.json
+*.json
+*.sqlite
