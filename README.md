@@ -14,6 +14,13 @@ Modules:
     piku::assert(true);
 
     ```
+  - **FNV**
+      ```cpp
+      import hash.fnv;
+
+      static_assert("hello world"_hash32 == 0xd58b3fa7);
+      static_assert("hello world"_hash64 == 0x779a65e7023cd2e7);
+      ```
   - **SHA2**
       ```cpp
       import hash.sha2;
@@ -35,6 +42,7 @@ Modules:
     import DTE;
     DTE::GotoLine("main.cpp", 10);
     ```
+  - **Salsa20**
   - **Types**
       ```cpp
       import piku.types;
