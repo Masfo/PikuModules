@@ -7,3 +7,4 @@ Release
 /.vs/VSWorkspaceState.json
 *.json
 *.sqlite
+/x64/ReleaseWithDebug
