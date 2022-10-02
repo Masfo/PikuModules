@@ -32,6 +32,12 @@
     <Filter Include="Modules\piku\assert">
       <UniqueIdentifier>{e61df296-0a0f-4b82-9632-659f53cefecc}</UniqueIdentifier>
     </Filter>
+    <Filter Include="Modules\piku\crypto">
+      <UniqueIdentifier>{74155810-6cfb-4958-9fc4-dc757f83bb2d}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Modules\piku\string">
+      <UniqueIdentifier>{bcbf9d8e-82e6-403b-9d85-72c0c6c7e39b}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <None Include="..\Piku\Test01\.clang-format">
@@ -73,6 +79,12 @@
     </ClCompile>
     <ClCompile Include="src\assert.ixx">
       <Filter>Modules\piku\assert</Filter>
+    </ClCompile>
+    <ClCompile Include="src\salsa20.ixx">
+      <Filter>Modules\piku\crypto</Filter>
+    </ClCompile>
+    <ClCompile Include="src\fnv1a_constexpr.ixx">
+      <Filter>Modules\piku\hash</Filter>
     </ClCompile>
   </ItemGroup>
 </Project>
