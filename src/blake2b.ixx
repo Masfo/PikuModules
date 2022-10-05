@@ -20,9 +20,8 @@ using namespace piku;
 namespace hash
 {
 
-    static inline u64  rotr64(const u64 w, const unsigned c) noexcept { return (w >> c) | (w << (64 - c)); }
-    static inline void store64(void *dst, u64 w) noexcept { memcpy(dst, &w, sizeof w); }
-    static inline u64  load64(const void *src) noexcept
+    static inline u64 rotr64(const u64 w, const unsigned c) noexcept { return (w >> c) | (w << (64 - c)); }
+    static inline u64 load64(const void *src) noexcept
     {
         u64 w;
         memcpy(&w, src, sizeof(w));
@@ -56,9 +55,13 @@ namespace hash
             std::copy_n(digits.begin(), len, binary.begin());
             valid = true;
         }
-        [[nodiscard]] bool from_hex(std::string_view hexkey)
+        [[nodiscard("You should check if your key is valid")]] bool from_hex(std::string_view hexkey)
         {
-            bool                   has_key = !hexkey.empty();
+            if (hexkey.empty())
+                return false;
+
+            keylen = 0;
+
             std::from_chars_result res{.ec = std::errc::invalid_argument};
             for (u8 &i : binary)
             {
@@ -66,11 +69,12 @@ namespace hash
                     break;
                 size_t len = std::min(as<size_t>(2), hexkey.size());
                 res        = std::from_chars(hexkey.data(), hexkey.data() + len, i, 16);
+                if (res.ec != std::errc())
+                    break;
 
                 hexkey.remove_prefix(len);
-                keylen++;
             }
-            valid = has_key && (res.ec == std::errc());
+            valid = (res.ec == std::errc());
             return valid;
         }
 
@@ -112,15 +116,20 @@ namespace hash
     export class [[nodiscard("You are not using your hash digest.")]] blake2_digest final
     {
     public:
-        [[nodiscard]] bool from_hex(std::string_view hexkey)
+        [[nodiscard("You should check if your digest is valid")]] bool from_hex(std::string_view hexkey)
         {
-            std::from_chars_result res;
+            if (hexkey.empty())
+                return false;
+
+            std::from_chars_result res{.ec = std::errc::invalid_argument};
             for (u8 &i : binary)
             {
                 if (hexkey.size() == 0)
                     break;
                 size_t len = std::min(as<size_t>(2), hexkey.size());
                 res        = std::from_chars(hexkey.data(), hexkey.data() + len, i, 16);
+                if (res.ec != std::errc())
+                    break;
 
                 hexkey.remove_prefix(len);
             }
@@ -297,8 +306,6 @@ namespace hash
 
         blake2_digest hash(const blake2_key &key, std::span<u8> input)
         {
-            blake2b_ctx ctx;
-
             init(key);
             update(input);
             return final();
