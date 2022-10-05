@@ -16,13 +16,7 @@ namespace hash
 {
 
 
-    export enum class Uppercase : u8 {
-        No,
-        Yes,
-    };
-
-
-    template <typename T, typename U> T load_bigendian(U const &bytes)
+    template <typename T, typename U> T load_bigendian(U const bytes)
     {
         T ret{};
         std::memcpy(&ret, bytes, sizeof(T));

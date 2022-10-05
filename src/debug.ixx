@@ -40,12 +40,16 @@ export namespace piku
     template <typename... Args> void println(std::string_view fmt, Args &&...args) noexcept
     {
 
-        output_message(std::format("{}\n",std::vformat(fmt, std::make_format_args(args...))));
+        output_message(std::format("{}\n", std::vformat(fmt, std::make_format_args(args...))));
     }
 
     // println
-    void println(std::string_view fmt) noexcept { output_message(fmt); }
     void println() noexcept { output_message("\n"); }
+    void println(std::string_view fmt) noexcept
+    {
+        output_message(fmt);
+        println();
+    }
 
 
     // trace

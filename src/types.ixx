@@ -25,6 +25,11 @@ export namespace piku
     using f64 = double;
 
 
+    export enum class Uppercase : u8 {
+        No,
+        Yes,
+    };
+
     template <typename T, typename U> T as(U u) { return static_cast<T>(u); }
 
     template <typename I, typename F>
@@ -48,7 +53,6 @@ export namespace piku
             return std::numeric_limits<I>::max();
         }
     }
-
 
     namespace literals
     {
