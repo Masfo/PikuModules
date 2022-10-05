@@ -30,9 +30,7 @@ export namespace piku
         Yes,
     };
 
-
     template <typename T, typename U> T as(U u) { return static_cast<T>(u); }
-
 
     template <typename I, typename F>
     requires std::integral<I> && std::floating_point<F> I as(F value)
@@ -55,7 +53,6 @@ export namespace piku
             return std::numeric_limits<I>::max();
         }
     }
-
 
     namespace literals
     {
