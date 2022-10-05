@@ -36,6 +36,22 @@ Modules:
       auto digest512 = h512.finalize().to_string();
       // digest512 = ddaf35a193617abacc417349ae204......d4423643ce80e2a9ac94fa54ca49f
       ```
+  - **BLAKE2B**
+      ```cpp
+      import hash.blake2b;
+
+      blake2 hash;
+
+      blake2_key optional_key;
+      optional_key.from_hex("DEADBEEF"sv);
+
+      hash.init(optional_key);
+      hash.update("abc"sv);
+
+      auto digest = hash.final();
+      // digest = b97ea1c42f318b885087e43ed2007......12eec570d3f9ec54004ca28d61c04
+
+      ```
   - **DTE** - *Open file in Visual Studio and goto a line from runtime.*
     ```cpp
     // link with: atls.lib ole32.lib OleAut32.lib uuid.lib
