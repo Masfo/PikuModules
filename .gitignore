@@ -5,10 +5,7 @@ Release
 /.vs/PikuModules/v17
 *.ifc
 /.vs/VSWorkspaceState.json
-<<<<<<< HEAD
 *.json
 *.sqlite
-=======
 /.vs
->>>>>>> types
 /x64/ReleaseWithDebug
