@@ -1,0 +1,19 @@
+#
+
+set(CMAKE_CXX_SYSROOT_FLAG_CODE "list(APPEND CMAKE_CXX_SOURCE_FILE_EXTENSIONS ixx)")
+
+target_sources(PikuModules PRIVATE INTERFACE <<<------
+	types.ixx
+	assert.ixx
+	debug.ixx
+	win32.ixx
+	DTE.ixx
+	FileMonitor.ixx
+
+	blake2b.ixx
+	fnv1a_constexpr.ixx
+	salsa20.ixx
+	sha2.ixx
+	piku.ixx
+)
+

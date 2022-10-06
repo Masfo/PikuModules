@@ -72,6 +72,7 @@ namespace hash
                 if (res.ec != std::errc())
                     break;
 
+                keylen++;
                 hexkey.remove_prefix(len);
             }
             valid = (res.ec == std::errc());

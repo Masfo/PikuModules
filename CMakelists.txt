@@ -1,0 +1,56 @@
+cmake_minimum_required (VERSION 3.24)
+
+if(DEFINED ENV{VCPKG_ROOT} AND NOT DEFINED CMAKE_TOOLCHAIN_FILE)
+  set(CMAKE_TOOLCHAIN_FILE "$ENV{VCPKG_ROOT}/scripts/buildsystems/vcpkg.cmake" CACHE STRING "")  
+endif()
+
+if(CMAKE_SOURCE_DIR STREQUAL CMAKE_BINARY_DIR)
+    message(FATAL_ERROR "Do not build in-source. Please remove CMakeCache.txt and the CMakeFiles/ directory. Then build out-of-source.")
+endif()
+
+set(CMAKE_MODULE_PATH ${CMAKE_MODULE_PATH} "${CMAKE_CURRENT_SOURCE_DIR}/CMake")
+set(CMAKE_EXPORT_COMPILE_COMMANDS ON)
+set(CMAKE_VERBOSE_MAKEFILE ON)
+set(CMAKE_CXX_SYSROOT_FLAG_CODE "list(APPEND CMAKE_CXX_SOURCE_FILE_EXTENSIONS ixx)")
+
+set(CMAKE_ARCHIVE_OUTPUT_DIRECTORY ${CMAKE_BINARY_DIR}/lib)
+
+enable_testing()
+
+##
+set(PROJECT_VERSION 1.0.0)
+project(PikuModules VERSION ${PROJECT_VERSION} LANGUAGES CXX)
+
+add_library(PikuModules)
+
+  set_property(TARGET PikuModules PROPERTY CXX_STANDARD          23)
+  set_property(TARGET PikuModules PROPERTY CXX_STANDARD_REQUIRED ON)
+  set_property(TARGET PikuModules PROPERTY CXX_EXTENSIONS        OFF)
+
+
+
+        set(CXX_MODULES_CHECK /experimental:module)
+        set(CXX_MODULES_FLAGS /experimental:module /interface)
+        set(CXX_MODULES_EXT ifc)
+        set(CXX_MODULES_CREATE_FLAGS -c)
+        set(CXX_MODULES_USE_FLAG /reference)
+        set(CXX_MODULES_OUTPUT_FLAG /ifcOutput)
+
+        target_compile_options(PikuModules PRIVATE /nologo)
+        target_compile_options(PikuModules PRIVATE /Zc:__cplusplus /Zc:alignedNew)
+        target_compile_options(PikuModules PRIVATE /utf-8)
+
+        target_compile_options(PikuModules PRIVATE /experimental:module)
+        target_compile_options(PikuModules PRIVATE /Zc:preprocessor)
+        target_compile_options(PikuModules PRIVATE /permissive-)
+        target_compile_options(PikuModules PRIVATE /interface /reference /ifcOutput)
+
+
+
+target_include_directories(PikuModules PRIVATE ${CMAKE_CURRENT_LIST_DIR}/src)
+
+
+
+add_subdirectory(src)
+
+##
