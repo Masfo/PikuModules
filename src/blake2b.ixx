@@ -71,7 +71,8 @@ namespace hash
                 res        = std::from_chars(hexkey.data(), hexkey.data() + len, i, 16);
                 if (res.ec != std::errc())
                     break;
-
+                
+                keylen++;
                 hexkey.remove_prefix(len);
             }
             valid = (res.ec == std::errc());
