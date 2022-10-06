@@ -53,6 +53,7 @@ namespace hash
         {
             size_t len = digits.size() <= binary.size() ? digits.size() : binary.size();
             std::copy_n(digits.begin(), len, binary.begin());
+            keylen = len;
             valid = true;
         }
         [[nodiscard("You should check if your key is valid")]] bool from_hex(std::string_view hexkey)
@@ -71,7 +72,8 @@ namespace hash
                 res        = std::from_chars(hexkey.data(), hexkey.data() + len, i, 16);
                 if (res.ec != std::errc())
                     break;
-
+                
+                keylen++;
                 hexkey.remove_prefix(len);
             }
             valid = (res.ec == std::errc());
