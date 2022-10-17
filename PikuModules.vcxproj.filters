@@ -56,9 +56,6 @@
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
-    <ClCompile Include="src\sha2.ixx">
-      <Filter>Modules\piku\hash</Filter>
-    </ClCompile>
     <ClCompile Include="src\piku.ixx">
       <Filter>Modules</Filter>
     </ClCompile>
@@ -87,6 +84,9 @@
       <Filter>Modules\piku\hash</Filter>
     </ClCompile>
     <ClCompile Include="src\blake2b.ixx">
+      <Filter>Modules\piku\hash</Filter>
+    </ClCompile>
+    <ClCompile Include="src\sha2.ixx">
       <Filter>Modules\piku\hash</Filter>
     </ClCompile>
   </ItemGroup>

@@ -3,34 +3,35 @@ module;
 #define WIN32_LEAN_AND_MEAN
 #include <windows.h>
 
-#include <format>
-#include <iostream>
 #include <string_view>
-#include <source_location>
-
 export module piku.debug;
-using namespace std::string_view_literals;
 
-void output_message(const std::string_view message) { OutputDebugStringA(message.data()); }
+import <format>;
+import <iostream>;
+import <source_location>;
+
+
+void output_message(const std::string_view message) noexcept { OutputDebugStringA(message.data()); }
 
 struct FormatLocation
 {
     std::string_view     fmt;
     std::source_location loc;
-    FormatLocation(const char *s, const std::source_location &l = std::source_location::current()) : fmt(s), loc(l) {}
-    FormatLocation(std::string_view s, const std::source_location &l = std::source_location::current()) : fmt(s), loc(l)
+    FormatLocation(const char *s, const std::source_location &l = std::source_location::current()) noexcept : fmt(s), loc(l) {}
+    FormatLocation(std::string_view s, const std::source_location &l = std::source_location::current())noexcept: fmt(s), loc(l)
     {
     }
 };
 
 export namespace piku
 {
+    using namespace std::string_view_literals;
 
 
     // print
     template <typename... Args> void print(std::string_view fmt, Args &&...args) noexcept
     {
-        output_message(std::format("{}"sv, std::vformat(fmt, std::make_format_args(args...))));
+        output_message(std::format("{}", std::vformat(fmt, std::make_format_args(args...))));
     }
 
     // print

@@ -24,6 +24,15 @@ using namespace piku;
 
 #ifdef _DEBUG
 
+[[noreturn]] void debug_and_halt()
+{
+    if (IsDebuggerPresent())
+    {
+        DebugBreak();
+        FatalExit(0);
+    }
+}
+
 export void assert_msg(bool                        expr,
                        std::string_view            message,
                        const std::source_location &loc = std::source_location::current()) noexcept
@@ -45,11 +54,7 @@ export void assert_msg(bool                        expr,
 #    endif
         println("\nAssert *****\n\n");
 
-        if (IsDebuggerPresent())
-        {
-            DebugBreak();
-            FatalExit(0);
-        }
+        debug_and_halt();
     }
 }
 
