@@ -38,6 +38,9 @@
     <Filter Include="Modules\piku\string">
       <UniqueIdentifier>{bcbf9d8e-82e6-403b-9d85-72c0c6c7e39b}</UniqueIdentifier>
     </Filter>
+    <Filter Include="Modules\piku\base64">
+      <UniqueIdentifier>{13933a3a-3a15-4111-b84c-5570fb5ebfaf}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <None Include="..\Piku\Test01\.clang-format">
@@ -88,6 +91,9 @@
     </ClCompile>
     <ClCompile Include="src\sha2.ixx">
       <Filter>Modules\piku\hash</Filter>
+    </ClCompile>
+    <ClCompile Include="src\base64.ixx">
+      <Filter>Modules\piku\base64</Filter>
     </ClCompile>
   </ItemGroup>
 </Project>

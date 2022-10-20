@@ -173,7 +173,7 @@
       <EnableModules>true</EnableModules>
       <LanguageStandard>stdcpplatest</LanguageStandard>
       <ForcedIncludeFiles>$(ProjectDir)include\DisabledWarningsMSVC.h;%(ForcedIncludeFiles)</ForcedIncludeFiles>
-      <CompileAs>CompileAsCpp</CompileAs>
+      <CompileAs>CompileAsCppModule</CompileAs>
       <TreatAngleIncludeAsExternal>false</TreatAngleIncludeAsExternal>
       <ScanSourceForModuleDependencies>false</ScanSourceForModuleDependencies>
       <AdditionalOptions>/Zc:__cplusplus /Zc:alignedNew %(AdditionalOptions)</AdditionalOptions>
@@ -271,6 +271,10 @@
     <ClCompile Include="src\assert.ixx">
       <CompileAs Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">CompileAsCppModule</CompileAs>
       <CompileAs Condition="'$(Configuration)|$(Platform)'=='ReleaseWithDebug|x64'">CompileAsCppModule</CompileAs>
+      <CompileAs Condition="'$(Configuration)|$(Platform)'=='Release|x64'">CompileAsCppModule</CompileAs>
+    </ClCompile>
+    <ClCompile Include="src\base64.ixx">
+      <CompileAs Condition="'$(Configuration)|$(Platform)'=='Release|x64'">CompileAsCppModule</CompileAs>
     </ClCompile>
     <ClCompile Include="src\blake2b.ixx">
       <CompileAs Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">CompileAsCppModule</CompileAs>
@@ -281,6 +285,8 @@
       <CompileAs Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">CompileAsCppModule</CompileAs>
       <WarningLevel Condition="'$(Configuration)|$(Platform)'=='Release|x64'">Level4</WarningLevel>
       <WarningLevel Condition="'$(Configuration)|$(Platform)'=='ReleaseWithDebug|x64'">Level4</WarningLevel>
+      <TreatAngleIncludeAsExternal Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">true</TreatAngleIncludeAsExternal>
+      <ExternalWarningLevel Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">TurnOffAllWarnings</ExternalWarningLevel>
     </ClCompile>
     <ClCompile Include="src\DTE.ixx">
       <CompileAs Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">CompileAsCppModule</CompileAs>
