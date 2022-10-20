@@ -3,12 +3,11 @@ module;
 #define WIN32_LEAN_AND_MEAN
 #include <windows.h>
 
+#include <format>
+#include <source_location>
 #include <string_view>
 export module piku.debug;
 
-import <format>;
-import <iostream>;
-import <source_location>;
 
 
 void output_message(const std::string_view message) noexcept { OutputDebugStringA(message.data()); }
