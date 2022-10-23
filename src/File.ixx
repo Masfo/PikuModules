@@ -22,7 +22,7 @@ namespace piku
     export class Fileview final
     {
     public:
-        Fileview()                 = default;
+        Fileview() = default;
 
         Fileview(const Fileview &) = delete;
 
@@ -45,11 +45,11 @@ namespace piku
         }
         explicit Fileview(fs::path const filename) noexcept { open(filename); }
 
-        bool open(fs::path const filename, FileAccess rw= FileAccess::Read) noexcept
+        bool open(fs::path const filename, FileAccess rw = FileAccess::Read) noexcept
         {
-            DWORD access    = GENERIC_READ;
+            DWORD access       = GENERIC_READ;
             DWORD page_protect = PAGE_READONLY;
-            
+
             if (rw == FileAccess::ReadWrite)
             {
                 access |= GENERIC_WRITE;
@@ -57,11 +57,18 @@ namespace piku
                 m_readonly   = false;
             }
 
-            m_filehandle = CreateFile(
-                filename.wstring().c_str(), access, FILE_SHARE_READ, nullptr, OPEN_EXISTING, FILE_ATTRIBUTE_NORMAL, nullptr);
+            m_filehandle    = CreateFile(filename.wstring().c_str(),
+                                      access,
+                                      FILE_SHARE_READ,
+                                      nullptr,
+                                      OPEN_EXISTING,
+                                      FILE_ATTRIBUTE_NORMAL,
+                                      nullptr);
             m_mappinghandle = CreateFileMapping(m_filehandle, nullptr, page_protect, 0, 0, nullptr);
 
             assert_msg(m_mappinghandle != 0, "Could not open file mapping");
+
+            map();
 
             return is_open();
         }
@@ -69,6 +76,12 @@ namespace piku
         bool is_open() const noexcept { return m_mappinghandle != 0; }
 
         operator bool() const noexcept { return is_open(); }
+
+        void close() noexcept
+        {
+            unmap();
+            m_readonly = true;
+        }
 
         size_t size() const noexcept
         {
@@ -78,47 +91,58 @@ namespace piku
             return 0;
         }
 
-        auto stringview() const noexcept
+        auto stringview() noexcept
         {
             if (auto *addr = static_cast<char *>(map()); addr)
                 return std::string_view{addr, size()};
 
             return std::string_view{};
         }
-        auto span() const noexcept
+        auto span() noexcept
         {
-            if (auto *addr = static_cast<std::byte *>(map()); addr)
-                return std::span<std::byte>{addr, size()};
+            if (auto *addr = static_cast<char *>(map()); addr)
+                return std::span<char>{addr, size()};
 
-            return std::span<std::byte>{};
+            return std::span<char>{};
         }
 
-        ~Fileview()
+       auto &operator[](size_t index) noexcept
         {
-            unmap();
-            m_readonly = true;
+            auto ptr = static_cast<char*>(map());
+            return ptr[index];
+        }
+
+        ~Fileview() { close();
         }
 
         bool operator==(const Fileview &other) const = default;
 
     private:
-        void *map() const noexcept
+        void *map()  noexcept
         {
             assert_msg(m_mappinghandle != 0, "File mapping is not open");
 
-            if (auto *addr = MapViewOfFile(m_mappinghandle, FILE_MAP_READ, 0, 0, 0); addr != nullptr)
-                return addr;
+            if (m_addr != nullptr)
+                return m_addr;
 
-            return nullptr;
+            DWORD access = FILE_MAP_READ;
+            if (m_readonly == false)
+                access |= FILE_MAP_WRITE;
+
+            m_addr = MapViewOfFile(m_mappinghandle, access, 0, 0, 0);
+            return m_addr;
         }
         void unmap() noexcept
         {
+            FlushViewOfFile(m_addr, 0);
+            UnmapViewOfFile(m_addr);
             CloseHandle(m_mappinghandle);
             CloseHandle(m_filehandle);
-            m_filehandle = m_mappinghandle = 0;
+            m_addr = m_filehandle = m_mappinghandle = 0;
         }
         HANDLE m_filehandle{0};
         HANDLE m_mappinghandle{0};
+        void  *m_addr { nullptr };
         bool   m_readonly{true};
     };
 
