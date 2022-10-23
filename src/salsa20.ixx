@@ -25,7 +25,7 @@ namespace salsa20
     };
 
 
-    export bool encrypt(key const &k, nonce const &n, std::span<u8> const buffer) noexcept { return true; }
+    export bool encrypt(key const &/*k*/, nonce const &/*n*/, std::span<u8> const /*buffer*/) noexcept { return true; }
 
     export bool decrypt(key const &k, nonce const &n, std::span<u8> const buffer) noexcept
     {
