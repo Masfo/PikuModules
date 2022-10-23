@@ -71,3 +71,12 @@ Modules:
       auto value = as<uint32>(256);
 
       ```
+   - **Fileview**
+        ```cpp 
+        import piku.file;
+
+        Fileview f;
+        f.open("dice.qoi", FileAccess::ReadWrite);
+
+        f[f.size()-1] = 0x01;
+        ```
