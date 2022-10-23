@@ -41,6 +41,9 @@
     <Filter Include="Modules\piku\base64">
       <UniqueIdentifier>{13933a3a-3a15-4111-b84c-5570fb5ebfaf}</UniqueIdentifier>
     </Filter>
+    <Filter Include="Modules\piku\hmac">
+      <UniqueIdentifier>{519d81f3-a36c-4ad4-9ca2-1e982f409226}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <None Include="..\Piku\Test01\.clang-format">
@@ -94,6 +97,12 @@
     </ClCompile>
     <ClCompile Include="src\base64.ixx">
       <Filter>Modules\piku\base64</Filter>
+    </ClCompile>
+    <ClCompile Include="src\hmac.ixx">
+      <Filter>Modules\piku\hmac</Filter>
+    </ClCompile>
+    <ClCompile Include="src\File.ixx">
+      <Filter>Modules\piku\FileIO\FileMap</Filter>
     </ClCompile>
   </ItemGroup>
 </Project>
