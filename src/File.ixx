@@ -43,7 +43,7 @@ namespace piku
             }
             return *this;
         }
-        explicit Fileview(fs::path const filename) noexcept { open(filename); }
+        explicit Fileview(fs::path const filename, FileAccess rw) noexcept { open(filename, rw); }
 
         bool open(fs::path const filename, FileAccess rw = FileAccess::Read) noexcept
         {
