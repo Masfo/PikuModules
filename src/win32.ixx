@@ -11,10 +11,10 @@ module;
 export module piku.win32;
 import piku.assert;
 import piku.types;
-std::string GetLocalRegistryValue(std::string_view key, std::string_view value) noexcept;
 
 namespace piku
 {
+    std::string GetLocalRegistryValue(std::string_view key, std::string_view value) noexcept;
 
 
     export template <typename T>
@@ -32,6 +32,7 @@ namespace piku
 
         if (!function_to_load)
             return nullptr;
+     
         return reinterpret_cast<T>((FARPROC *)function_to_load);
     }
 
@@ -57,7 +58,7 @@ namespace piku
         ULONG cb   = 0;
         ULONG Type = 0;
 
-        dwError = RegQueryValueExA(hKey, value.data(), nullptr, &Type, nullptr, &cb);
+        dwError = RegQueryValueExA_F(hKey, value.data(), nullptr, &Type, nullptr, &cb);
         if (dwError != ERROR_SUCCESS)
             return "";
 
